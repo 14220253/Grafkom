@@ -23,6 +23,48 @@ class Roda{
             vertex.push(1);
             vertex.push(1);
         }
+        for (var i=0;i<181;i++) {
+            var a = rad*Math.cos((i/180)*Math.PI);
+            var b = rad*Math.sin((i/180)*Math.PI);
+            var c = rad*Math.cos(((i+180)/180)*Math.PI);
+            var d = rad*Math.sin(((i+180)/180)*Math.PI);
+            vertex.push(rad);
+            vertex.push(a);
+            vertex.push(b);
+    
+            vertex.push(1);
+            vertex.push(1);
+            vertex.push(1);
+
+            vertex.push(rad);
+            vertex.push(c);
+            vertex.push(d);
+    
+            vertex.push(1);
+            vertex.push(1);
+            vertex.push(1);
+        }
+        for (var i=0;i<181;i++) {
+            var a = rad*Math.cos((i/180)*Math.PI);
+            var b = rad*Math.sin((i/180)*Math.PI);
+            var c = rad*Math.cos(((i+180)/180)*Math.PI);
+            var d = rad*Math.sin(((i+180)/180)*Math.PI);
+            vertex.push(0);
+            vertex.push(a);
+            vertex.push(b);
+    
+            vertex.push(1);
+            vertex.push(1);
+            vertex.push(1);
+
+            vertex.push(0);
+            vertex.push(c);
+            vertex.push(d);
+    
+            vertex.push(1);
+            vertex.push(1);
+            vertex.push(1);
+        }
         var faces = [];
         for (var i=0;i< ((vertex.length/5) - 147);i+=2) {
             faces.push(i);
