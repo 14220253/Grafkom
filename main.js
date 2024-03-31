@@ -3,11 +3,6 @@ function main(){
     CANVAS.width = window.innerWidth;
     CANVAS.height = window.innerHeight;
 
-
-
-
-
-
     /**
      * @type {WebGLRenderingContext}
      */
@@ -43,19 +38,6 @@ function main(){
                 gl_FragColor = vec4(vColor,1.);
             }
     `;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //event listener
     
