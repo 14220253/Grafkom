@@ -206,7 +206,7 @@ function main(){
 
 
 
-    var roda = new Roda(GL, 1, shader_vertex_source, shader_fragment_source);
+    var roda = new Roda(GL, 1, 0.3, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
 
     roda.setup();
