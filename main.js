@@ -206,10 +206,13 @@ function main(){
 
 
 
-    var roda = new Roda(GL, 1, 0.3, shader_vertex_source, shader_fragment_source);
+    // var roda = new Roda(GL, 1, 0.3, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
 
-    roda.setup();
+    var thomas = new Thomas(GL, shader_vertex_source, shader_fragment_source);
+
+    thomas.setup();
+    // roda.setup();
     sky.setup();
 
     LIBS.translateZ(VIEW_MATRIX, -10);
@@ -240,12 +243,16 @@ function main(){
         GL.depthFunc(GL.LEQUAL);
         GL.clearDepth(cube_size);
         GL.clear(GL.COLOR_BUFFER_BIT | GL.D_BUFFER_BIT);
-
+        
+        // roda.MODEL_MATRIX = MODEL_MATRIX2;
+        //roda.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        thomas.MODEL_MATRIX = MODEL_MATRIX2;
+        thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        
         sky.MODEL_MATRIX = MODEL_MATRIX;
         sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
-        roda.MODEL_MATRIX = MODEL_MATRIX2;
-        roda.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        
 
         GL.flush();
 

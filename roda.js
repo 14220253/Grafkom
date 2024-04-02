@@ -1,5 +1,6 @@
 class Roda{
     object = null;
+    object2 = null;
     MODEL_MATRIX = null;
     constructor(GL, rad, h, shader_vertex_source, shader_fragment_source) {
         //generate vertex and face
@@ -171,5 +172,10 @@ class Roda{
     render(VIEW_MATRIX, PROJECTION_MATRIX){
         this.object.MODEL_MATRIX = this.MODEL_MATRIX;
         this.object.render(VIEW_MATRIX, PROJECTION_MATRIX);
+    }
+
+    set(obj) {
+        this.object2 = obj;
+        this.object.childs.push(this.object2);
     }
 }
