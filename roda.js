@@ -1,14 +1,14 @@
 class Roda{
     object = null;
     MODEL_MATRIX = null;
-    constructor(GL, rad, h, shader_vertex_source, shader_fragment_source) {
+    constructor(GL, rad, h, posX, posY, posZ, shader_vertex_source, shader_fragment_source) {
         //generate vertex and face
         //Cylinder luar = 4320 vertex
         var vertex = [];
         for (var i=0;i<361;i++) {
-            var a = rad*Math.cos((i/180)*Math.PI);
-            var b = rad*Math.sin((i/180)*Math.PI);
-            vertex.push(-h);
+            var a = rad*Math.cos((i/180)*Math.PI) + posY;
+            var b = rad*Math.sin((i/180)*Math.PI) + posX;
+            vertex.push(-h + posZ);
             vertex.push(a);
             vertex.push(b);
     
@@ -16,7 +16,7 @@ class Roda{
             vertex.push(0);
             vertex.push(1);
 
-            vertex.push(h);
+            vertex.push(h + posZ);
             vertex.push(a);
             vertex.push(b);
     
@@ -27,9 +27,9 @@ class Roda{
 
         //cylinder dalam = 4320 vertex
         for (var i=0;i<361;i++) {
-            var a = 0.85 * rad*Math.cos((i/180)*Math.PI);
-            var b = 0.85 * rad*Math.sin((i/180)*Math.PI);
-            vertex.push(-h);
+            var a = 0.85 * rad*Math.cos((i/180)*Math.PI) + posY;
+            var b = 0.85 * rad*Math.sin((i/180)*Math.PI) + posX;
+            vertex.push(-h + posZ);
             vertex.push(a);
             vertex.push(b);
     
@@ -37,7 +37,7 @@ class Roda{
             vertex.push(1);
             vertex.push(1);
 
-            vertex.push(h);
+            vertex.push(h + posZ);
             vertex.push(a);
             vertex.push(b);
     
@@ -48,9 +48,9 @@ class Roda{
 
         //cylinder tengah = 4320 vertex
         for (var i=0;i<361;i++) {
-            var a = 0.2 * rad*Math.cos((i/180)*Math.PI);
-            var b = 0.2 * rad*Math.sin((i/180)*Math.PI);
-            vertex.push(-h);
+            var a = 0.2 * rad*Math.cos((i/180)*Math.PI) + posY;
+            var b = 0.2 * rad*Math.sin((i/180)*Math.PI) + posX;
+            vertex.push(-h + posZ);
             vertex.push(a);
             vertex.push(b);
     
@@ -58,7 +58,7 @@ class Roda{
             vertex.push(1);
             vertex.push(0);
 
-            vertex.push(h);
+            vertex.push(h + posZ);
             vertex.push(a);
             vertex.push(b);
     
