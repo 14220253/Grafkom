@@ -17,7 +17,6 @@ class MyObject {
     GL = null;
 
     MODEL_MATRIX = LIBS.get_I4();
-
     constructor(GL, vertex, faces, shader_vertex_source, shader_fragment_source) {
         this.GL = GL;
         this.vertex = vertex;
@@ -61,6 +60,13 @@ class MyObject {
         this.cube_vbo = GL.createBuffer();
         this.cube_ebo = GL.createBuffer();
     }
+
+    
+
+    addChild(object) {
+        this.childs.push(object);
+    }
+
 
     setup() {
         this.GL.bindBuffer(this.GL.ARRAY_BUFFER, this.cube_vbo);

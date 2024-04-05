@@ -128,69 +128,9 @@ function main(){
 
     let cube_size = 50.0;
     //vertices of object
-    var cube = [ // X, Y, Z           R, G, B
-                // Top
-                -cube_size, cube_size, -cube_size,   0, 0.5, 1,
-                -cube_size, cube_size, cube_size,    0, 0.5, 1,
-                cube_size, cube_size, cube_size,     0, 0.5, 1,
-                cube_size, cube_size, -cube_size,    0, 0.5, 1,
-
-                // Left
-                -cube_size, cube_size, cube_size,    1, 0.5, 1,
-                -cube_size, -cube_size, cube_size,   1, 0.5, 1,
-                -cube_size, -cube_size, -cube_size,  1, 0.5, 1,
-                -cube_size, cube_size, -cube_size,   1, 0.5, 1,
-
-                // Right
-                cube_size, cube_size, cube_size,    0, 0.5, 0,
-                cube_size, -cube_size, cube_size,   0, 0.5, 0,
-                cube_size, -cube_size, -cube_size,  0, 0.5, 0,
-                cube_size, cube_size, -cube_size,   0, 0.5, 0,
-
-                // Front
-                cube_size, cube_size, cube_size,    0, 0.5, 0.5,
-                cube_size, -cube_size, cube_size,    0, 0.5, 0.5,
-                -cube_size, -cube_size, cube_size,    0, 0.5, 0.5,
-                -cube_size, cube_size, cube_size,    0, 0.5, 0.5,
-
-                // Back
-                cube_size, cube_size, -cube_size,    0.5, 0.5, 1,
-                cube_size, -cube_size, -cube_size,   0.5, 0.5, 1,
-                -cube_size, -cube_size, -cube_size,   0.5, 0.5, 1,
-                -cube_size, cube_size, -cube_size,    0.5, 0.5, 1,
-
-                // Bottom
-                -cube_size, -cube_size, -cube_size,   0, 0, 0,
-                -cube_size, -cube_size, cube_size,    0, 0, 0,
-                cube_size, -cube_size, cube_size,     0, 0, 0,
-                cube_size, -cube_size, -cube_size,    0, 0, 0,
-            ];
+    var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.2, 0.6, 1);
   
-    var cube_faces = [
-                        // Top
-                        0, 1, 2,
-                        0, 2, 3,
-
-                        // Left
-                        5, 4, 6,
-                        6, 4, 7,
-
-                        // Right
-                        8, 9, 10,
-                        8, 10, 11,
-
-                        // Front
-                        12, 13, 14,
-                        12, 14, 15,
-
-                        // Back
-                        16, 17, 18,
-                        16, 18, 19,
-
-                        // Bottom
-                        20, 21, 22,
-                        20, 22, 23
-                    ];
+    var cube_faces = SHAPE.squareFaces();
 
 
   
@@ -206,10 +146,10 @@ function main(){
 
 
 
-    var roda = new Roda(GL, 1, 0.3, shader_vertex_source, shader_fragment_source);
+    var thomas = new Thomas(GL, 0, 0, 0, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
 
-    roda.setup();
+    thomas.setup();
     sky.setup();
 
     LIBS.translateZ(VIEW_MATRIX, -10);
@@ -244,8 +184,8 @@ function main(){
         sky.MODEL_MATRIX = MODEL_MATRIX;
         sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
-        roda.MODEL_MATRIX = MODEL_MATRIX2;
-        roda.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        thomas.MODEL_MATRIX = MODEL_MATRIX2;
+        thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         GL.flush();
 
