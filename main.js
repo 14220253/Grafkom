@@ -206,10 +206,12 @@ function main(){
 
 
 
-    var roda = new Roda(GL, 1, 0.3, shader_vertex_source, shader_fragment_source);
+    //var roda = new Roda(GL, 1, 0.3, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
+    var kincir = new KincirAngin(GL, 1, 0.3, 2, 0.1, shader_vertex_source, shader_fragment_source);
 
-    roda.setup();
+    kincir.setup();
+    //roda.setup();
     sky.setup();
 
     LIBS.translateZ(VIEW_MATRIX, -10);
@@ -244,9 +246,11 @@ function main(){
         sky.MODEL_MATRIX = MODEL_MATRIX;
         sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
-        roda.MODEL_MATRIX = MODEL_MATRIX2;
-        roda.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        //roda.MODEL_MATRIX = MODEL_MATRIX2;
+        //roda.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
+        kincir.MODEL_MATRIX = MODEL_MATRIX;
+        kincir.render(VIEW_MATRIX, PROJECTION_MATRIX);
         GL.flush();
 
         
