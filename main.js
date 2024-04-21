@@ -58,13 +58,13 @@ function main(){
         x_prev = e.pageX, y_prev = e.pageY;
         e.preventDefault();
         return false;
-      };
+    };
     
-      var mouseUp = function(e){
+    var mouseUp = function(e){
         drag = false;
-      };
+    };
     
-      var mouseMove = function(e) {
+    var mouseMove = function(e) {
         if (!drag) return false;
         dX = (e.pageX-x_prev) * Math.PI / CANVAS.width,
           dY = (e.pageY-y_prev) * Math.PI / CANVAS.height;
@@ -72,11 +72,11 @@ function main(){
         PHI += dY;
         x_prev = e.pageX, y_prev = e.pageY;
         e.preventDefault();
-      };
+    };
 
-      var speed = 0.2;
+    var speed = 0.2;
 
-      var buttonA = function(e) {
+    var buttonA = function(e) {
         if(e.keyCode == 65) {
             dx = speed;
         }
@@ -112,80 +112,112 @@ function main(){
         dz = 0;
     }   
     
-      CANVAS.addEventListener("mousedown", mouseDown, false);
-      CANVAS.addEventListener("mouseup", mouseUp, false);
-      CANVAS.addEventListener("mouseout", mouseUp, false);
-      CANVAS.addEventListener("mousemove", mouseMove, false);
-      document.addEventListener("keydown", buttonA, true);
-      document.addEventListener("keydown", buttonD, true);
-      document.addEventListener("keydown", buttonW, true);
-      document.addEventListener("keydown", buttonS, true);
-      document.addEventListener("keydown", buttonQ, true);
-      document.addEventListener("keydown", buttonE, true);
-      document.addEventListener("keyup", keyUp, true);
-
-
+        CANVAS.addEventListener("mousedown", mouseDown, false);
+        CANVAS.addEventListener("mouseup", mouseUp, false);
+        CANVAS.addEventListener("mouseout", mouseUp, false);
+        CANVAS.addEventListener("mousemove", mouseMove, false);
+        document.addEventListener("keydown", buttonA, true);
+        document.addEventListener("keydown", buttonD, true);
+        document.addEventListener("keydown", buttonW, true);
+        document.addEventListener("keydown", buttonS, true);
+        document.addEventListener("keydown", buttonQ, true);
+        document.addEventListener("keydown", buttonE, true);
+        document.addEventListener("keyup", keyUp, true);
 
     let cube_size = 50.0;
     //vertices of object
     var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.2, 0.6, 1);
   
     var cube_faces = SHAPE.squareFaces();
+    
+    var cameraAngleRadians = m4.degToRad(0);
+    var fieldOfViewRadians = m4.degToRad(60);
 
+    var numFs = 5;
+    var radius = 10;
 
-  
-    //matrix 
-    var PROJECTION_MATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height,1,100); //a ratio, 1 itu zmin diana jarak terdekat 100 merupakan zmax yaitu jarak terjauh
+    // Compute the projection matrix
+    var aspect = CANVAS.width/CANVAS.height;
+    var zNear = 0.1;
+    var zFar = 2000;
+    var projectionMatrix = m4.perspective(fieldOfViewRadians, aspect, zNear, zFar);
+
+    // Compute a matrix for the camera
+    var cameraMatrix = m4.yRotation(cameraAngleRadians);
+    cameraMatrix = m4.translate(cameraMatrix, 0, 0, radius);
+
+    // Make a view matrix from the camera matrix
+    var viewMatrix = m4.inverse(cameraMatrix);
+
+    // Compute a view projection matrix
+    var viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
+
+    var PROJECTION_MATRIX = projectionMatrix;
+    //LIBS.get_projection(60,CANVAS.width/CANVAS.height,0.01,200); //a ratio, 1 itu zmin diana jarak terdekat 100 merupakan zmax yaitu jarak terjauh
+    
+    var VIEW_MATRIX = viewMatrix;
+
     var MODEL_MATRIX = LIBS.get_I4();
-    var VIEW_MATRIX = LIBS.get_I4();
-
     var MODEL_MATRIX2 = LIBS.get_I4();
 
-    LIBS.translateY(VIEW_MATRIX, 0);
+    // LIBS.translateY(VIEW_MATRIX, 0);
     var time_prev = 0;
-
-
 
     var thomas = new Thomas(GL, 0, 0, 0, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
 
     thomas.setup();
     sky.setup();
-
-    LIBS.translateZ(VIEW_MATRIX, -10);
+    
+    // LIBS.translateZ(VIEW_MATRIX, -10);
 
     var time_prev = 0;
     var animate = function(time){
-        var dt = time-time_prev;
-        if (!drag) {
-          dX *= AMORTIZATION, dY *= AMORTIZATION;
-          THETA += dX, PHI += dY;
-        }
-        MODEL_MATRIX = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX, THETA);
-        LIBS.rotateX(MODEL_MATRIX, PHI);
-
-        
-        MODEL_MATRIX2 = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX2, THETA);
-        LIBS.rotateX(MODEL_MATRIX2, PHI);
-        time_prev = time;
-
-        LIBS.translateX(VIEW_MATRIX, dx);
-        LIBS.translateY(VIEW_MATRIX, dy);
-        LIBS.translateZ(VIEW_MATRIX, dz);
-        // GL.viewport(0,0,CANVAS.width,CANVAS.height);
         GL.clearColor(0,0,0,0);
         GL.enable(GL.DEPTH_TEST);
         GL.depthFunc(GL.LEQUAL);
         GL.clearDepth(cube_size);
         GL.clear(GL.COLOR_BUFFER_BIT | GL.D_BUFFER_BIT);
+        // GL.viewport(0,0,CANVAS.width,CANVAS.height);
 
+        LIBS.rotateY(VIEW_MATRIX, THETA);
+        LIBS.rotateX(VIEW_MATRIX, PHI);
+
+        m4.xRotation(VIEW_MATRIX, PHI);
+        m4.yRotation(VIEW_MATRIX, THETA);
+        THETA = 0;
+        PHI = 0;
+
+        // var dt = time-time_prev;
+        // if (!drag) {
+        //   dX *= AMORTIZATION, dY *= AMORTIZATION;
+        //   THETA += dX, PHI += dY;
+        // }
+
+        MODEL_MATRIX = LIBS.get_I4();
+        MODEL_MATRIX2 = LIBS.get_I4();
+
+        // LIBS.rotateY(MODEL_MATRIX2, THETA);
+        // LIBS.rotateX(MODEL_MATRIX2, PHI);
+
+        // LIBS.rotateY(MODEL_MATRIX2, THETA);
+        // LIBS.rotateX(MODEL_MATRIX2, PHI);
+
+        time_prev = time;
+
+        // LIBS.translateX(VIEW_MATRIX, dx);
+        // LIBS.translateY(VIEW_MATRIX, dy);
+        // LIBS.translateZ(VIEW_MATRIX, dz);
+
+        m4.lookAt(VIEW_MATRIX, [dx,dy, dz], [5 + dx,dy,dz], [0,1,0]);
+        
+        LIBS.translateX(MODEL_MATRIX2, 5);
         sky.MODEL_MATRIX = MODEL_MATRIX;
         sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         thomas.MODEL_MATRIX = MODEL_MATRIX2;
         thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
+
 
         GL.flush();
 

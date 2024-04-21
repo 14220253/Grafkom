@@ -87,6 +87,8 @@ class MyObject {
     render(VIEW_MATRIX, PROJECTION_MATRIX) {
         this.GL.useProgram(this.SHADER_PROGRAM);
 
+        // this.GL.uniformMatrix4fv(this._PMATRIX, false, PROJECTION_MATRIX);
+
         this.GL.uniformMatrix4fv(this._PMATRIX, false, PROJECTION_MATRIX);
         this.GL.uniformMatrix4fv(this._VMATRIX, false, VIEW_MATRIX);
         this.GL.uniformMatrix4fv(this._MMATRIX, false, this.MODEL_MATRIX);
