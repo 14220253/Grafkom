@@ -141,10 +141,12 @@ function main(){
 
     var MODEL_MATRIX2 = LIBS.get_I4();
 
-    LIBS.translateY(VIEW_MATRIX, 0);
+    // LIBS.translateY(VIEW_MATRIX, 0);
     var time_prev = 0;
 
-
+    var gCamera = new Camera(GL);
+    gCamera.transform.position.set(0,0,10);
+    var gCameraCtrl = new CameraController(GL,gCamera);
 
     var thomas = new Thomas(GL, 0, 0, 0, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
@@ -152,28 +154,30 @@ function main(){
     thomas.setup();
     sky.setup();
 
-    LIBS.translateZ(VIEW_MATRIX, -10);
+    // LIBS.translateZ(VIEW_MATRIX, -10);
 
     var time_prev = 0;
     var animate = function(time){
-        var dt = time-time_prev;
-        if (!drag) {
-          dX *= AMORTIZATION, dY *= AMORTIZATION;
-          THETA += dX, PHI += dY;
-        }
-        MODEL_MATRIX = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX, THETA);
-        LIBS.rotateX(MODEL_MATRIX, PHI);
+        gCamera.updateViewMatrix();
 
-        
-        MODEL_MATRIX2 = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX2, THETA);
-        LIBS.rotateX(MODEL_MATRIX2, PHI);
-        time_prev = time;
+        // var dt = time-time_prev;
+        // if (!drag) {
+        //   dX *= AMORTIZATION, dY *= AMORTIZATION;
+        //   THETA += dX, PHI += dY;
+        // }
+        // LIBS.rotateY(MODEL_MATRIX, THETA);
+        // LIBS.rotateX(MODEL_MATRIX, PHI);
 
-        LIBS.translateX(VIEW_MATRIX, dx);
-        LIBS.translateY(VIEW_MATRIX, dy);
-        LIBS.translateZ(VIEW_MATRIX, dz);
+        // LIBS.rotateY(MODEL_MATRIX2, THETA);
+        // LIBS.rotateX(MODEL_MATRIX2, PHI);
+        // time_prev = time;
+
+        gCamera.panX(-dx);
+        gCamera.panY(-dy);
+        gCamera.panZ(-dz);
+        // LIBS.translateX(VIEW_MATRIX, dx);
+        // LIBS.translateY(VIEW_MATRIX, dy);
+        // LIBS.translateZ(VIEW_MATRIX, dz);
         // GL.viewport(0,0,CANVAS.width,CANVAS.height);
         GL.clearColor(0,0,0,0);
         GL.enable(GL.DEPTH_TEST);
@@ -182,10 +186,10 @@ function main(){
         GL.clear(GL.COLOR_BUFFER_BIT | GL.D_BUFFER_BIT);
 
         sky.MODEL_MATRIX = MODEL_MATRIX;
-        sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        sky.render(gCamera.viewMatrix, PROJECTION_MATRIX);
 
         thomas.MODEL_MATRIX = MODEL_MATRIX2;
-        thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        thomas.render(gCamera.viewMatrix, PROJECTION_MATRIX);
 
         GL.flush();
 

@@ -7,8 +7,6 @@ var LIBS = {
 
     },
 
-  
-
     get_projection: function(angle, a, zMin, zMax) {
 
       var tan = Math.tan(LIBS.degToRad(0.5*angle)),
