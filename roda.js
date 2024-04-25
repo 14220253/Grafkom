@@ -1,14 +1,20 @@
 class Roda{
     object = null;
     MODEL_MATRIX = null;
-    constructor(GL, rad, h, posX, posY, posZ, shader_vertex_source, shader_fragment_source) {
+    posX = null;
+    posY = null;
+    posZ = null;
+    constructor(GL, rad, h, posX, posY, posZ, shader_vertex_source, shader_fragment_source, MM) {
         //generate vertex and face
         //Cylinder luar = 4320 vertex
+        this.posX = posX;
+        this.posY = posY;
+        this.posZ = posZ;
         var vertex = [];
         for (var i=0;i<361;i++) {
-            var a = rad*Math.cos((i/180)*Math.PI) + posY;
-            var b = rad*Math.sin((i/180)*Math.PI) + posX;
-            vertex.push(-h + posZ);
+            var a = rad*Math.cos((i/180)*Math.PI);
+            var b = rad*Math.sin((i/180)*Math.PI);
+            vertex.push(-h);
             vertex.push(a);
             vertex.push(b);
     
@@ -16,7 +22,7 @@ class Roda{
             vertex.push(0);
             vertex.push(1);
 
-            vertex.push(h + posZ);
+            vertex.push(h);
             vertex.push(a);
             vertex.push(b);
     
@@ -27,9 +33,9 @@ class Roda{
 
         //cylinder dalam = 4320 vertex
         for (var i=0;i<361;i++) {
-            var a = 0.85 * rad*Math.cos((i/180)*Math.PI) + posY;
-            var b = 0.85 * rad*Math.sin((i/180)*Math.PI) + posX;
-            vertex.push(-h + posZ);
+            var a = 0.85 * rad*Math.cos((i/180)*Math.PI);
+            var b = 0.85 * rad*Math.sin((i/180)*Math.PI);
+            vertex.push(-h);
             vertex.push(a);
             vertex.push(b);
     
@@ -37,7 +43,7 @@ class Roda{
             vertex.push(1);
             vertex.push(1);
 
-            vertex.push(h + posZ);
+            vertex.push(h);
             vertex.push(a);
             vertex.push(b);
     
@@ -48,9 +54,9 @@ class Roda{
 
         //cylinder tengah = 4320 vertex
         for (var i=0;i<361;i++) {
-            var a = 0.2 * rad*Math.cos((i/180)*Math.PI) + posY;
-            var b = 0.2 * rad*Math.sin((i/180)*Math.PI) + posX;
-            vertex.push(-h + posZ);
+            var a = 0.2 * rad*Math.cos((i/180)*Math.PI);
+            var b = 0.2 * rad*Math.sin((i/180)*Math.PI);
+            vertex.push(-h);
             vertex.push(a);
             vertex.push(b);
     
@@ -58,7 +64,7 @@ class Roda{
             vertex.push(1);
             vertex.push(0);
 
-            vertex.push(h + posZ);
+            vertex.push(h);
             vertex.push(a);
             vertex.push(b);
     
@@ -162,6 +168,11 @@ class Roda{
             faces.push(i+3);
         }
 
+        this.MODEL_MATRIX = MM;
+        LIBS.translateX(this.MODEL_MATRIX, posX);
+        LIBS.translateY(this.MODEL_MATRIX, posY);
+        LIBS.translateZ(this.MODEL_MATRIX, posZ);
+
         this.object = new MyObject(GL, vertex, faces, shader_vertex_source, shader_fragment_source);
     }
 
@@ -170,6 +181,13 @@ class Roda{
     }
     render(VIEW_MATRIX, PROJECTION_MATRIX){
         this.object.MODEL_MATRIX = this.MODEL_MATRIX;
+        LIBS.translateX(this.MODEL_MATRIX, -this.posX);
+        LIBS.translateY(this.MODEL_MATRIX, -this.posY);
+        LIBS.translateZ(this.MODEL_MATRIX, -this.posZ);
+        LIBS.rotateX(this.MODEL_MATRIX, 0.05);
+        LIBS.translateX(this.MODEL_MATRIX, this.posX);
+        LIBS.translateY(this.MODEL_MATRIX, this.posY);
+        LIBS.translateZ(this.MODEL_MATRIX, this.posZ);
         this.object.render(VIEW_MATRIX, PROJECTION_MATRIX);
     }
 }
