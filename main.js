@@ -51,8 +51,8 @@ function main(){
     var dy = 0;
     var dz = 0;
 
-    var camera_angle;
-    var moving = false;
+
+
     var mouseDown = function(e) {
         drag = true;
         x_prev = e.pageX, y_prev = e.pageY;
@@ -126,22 +126,25 @@ function main(){
 
 
 
-    let cube_size = 50.0;
+    let cube_size = 500.0;
     //vertices of object
-    var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.2, 0.6, 1);
+    var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.9, 0.9, 0.9);
   
     var cube_faces = SHAPE.squareFaces();
 
-
-  
+    
+    var cameraMatrix = LIBS.get_I4();
+    LIBS.rotateY(cameraMatrix, 0);
+    LIBS.translateZ(cameraMatrix, 10);
     //matrix 
-    var PROJECTION_MATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height,1,100); //a ratio, 1 itu zmin diana jarak terdekat 100 merupakan zmax yaitu jarak terjauh
+    var PROJECTION_MATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height,0.01,9999); //a ratio, 1 itu zmin diana jarak terdekat 100 merupakan zmax yaitu jarak terjauh
     var MODEL_MATRIX = LIBS.get_I4();
-    var VIEW_MATRIX = LIBS.get_I4();
+    var VIEW_MATRIX = LIBS.inverse(cameraMatrix);
+    var VIEW_PROJECTION_MATRIX = LIBS.multiply(PROJECTION_MATRIX, VIEW_MATRIX);
 
     var MODEL_MATRIX2 = LIBS.get_I4();
 
-    LIBS.translateY(VIEW_MATRIX, 0);
+    // LIBS.translateY(VIEW_MATRIX, 0);
     var time_prev = 0;
 
 
@@ -152,24 +155,33 @@ function main(){
     thomas.setup();
     sky.setup();
 
-    LIBS.translateZ(VIEW_MATRIX, -10);
+    // LIBS.translateZ(VIEW_MATRIX, -10);
 
     var time_prev = 0;
     var animate = function(time){
+        var matrix = VIEW_PROJECTION_MATRIX;
+
+        LIBS.translateX(matrix, THETA);
+        LIBS.translateY(matrix, PHI);
+        // LIBS.translateZ(matrix, -THETA);
+
         var dt = time-time_prev;
         if (!drag) {
           dX *= AMORTIZATION, dY *= AMORTIZATION;
           THETA += dX, PHI += dY;
         }
         MODEL_MATRIX = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX, THETA);
-        LIBS.rotateX(MODEL_MATRIX, PHI);
+        LIBS.rotateY(VIEW_MATRIX, THETA);
+        LIBS.rotateX(VIEW_MATRIX, PHI);
 
         
         MODEL_MATRIX2 = LIBS.get_I4();
         LIBS.rotateY(MODEL_MATRIX2, THETA);
         LIBS.rotateX(MODEL_MATRIX2, PHI);
         time_prev = time;
+
+        THETA = 0;
+        PHI = 0;
 
         LIBS.translateX(VIEW_MATRIX, dx);
         LIBS.translateY(VIEW_MATRIX, dy);
