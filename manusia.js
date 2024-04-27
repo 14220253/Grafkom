@@ -85,6 +85,8 @@ class Manusia{
 
 
         this.objects.forEach(object => {
+            LIBS.rotateX(object.MODEL_MATRIX, 1);
+
             object.render(VIEW_MATRIX, PROJECTION_MATRIX);
         });
     }
