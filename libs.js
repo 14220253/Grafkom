@@ -1,37 +1,37 @@
 
-// var LIBS = {
+var LIBS = {
 
-//     degToRad: function(angle){
+    degToRad: function(angle){
 
-//       return(angle*Math.PI/180);
+      return(angle*Math.PI/180);
 
-//     },
-
-  
-
-//     get_projection: function(angle, a, zMin, zMax) {
-
-//       var tan = Math.tan(LIBS.degToRad(0.5*angle)),
-
-//           A = -(zMax+zMin)/(zMax-zMin),
-
-//           B = (-2*zMax*zMin)/(zMax-zMin);
+    },
 
   
 
-//       return [
+    get_projection: function(angle, a, zMin, zMax) {
 
-//         0.5/tan, 0 ,   0, 0,
+      var tan = Math.tan(LIBS.degToRad(0.5*angle)),
 
-//         0, 0.5*a/tan,  0, 0,
+          A = -(zMax+zMin)/(zMax-zMin),
 
-//         0, 0,         A, -1,
+          B = (-2*zMax*zMin)/(zMax-zMin);
 
-//         0, 0,         B, 0
+  
 
-//       ];
+      return [
 
-//     },
+        0.5/tan, 0 ,   0, 0,
+
+        0, 0.5*a/tan,  0, 0,
+
+        0, 0,         A, -1,
+
+        0, 0,         B, 0
+
+      ];
+
+    },
 
     set_I4: function(m) {
 
@@ -52,109 +52,106 @@
       },
 
       rotateX: function(m, angle) {
-    
+        var c = Math.cos(angle);
 
-//       rotateX: function(m, angle) {
-//         var c = Math.cos(angle);
+        var s = Math.sin(angle);
 
-//         var s = Math.sin(angle);
+        var mv1=m[1], mv5=m[5], mv9=m[9];
 
-//         var mv1=m[1], mv5=m[5], mv9=m[9];
+        m[1]=m[1]*c-m[2]*s;
 
-//         m[1]=m[1]*c-m[2]*s;
+        m[5]=m[5]*c-m[6]*s;
 
-//         m[5]=m[5]*c-m[6]*s;
-
-//         m[9]=m[9]*c-m[10]*s;
+        m[9]=m[9]*c-m[10]*s;
 
     
 
-//         m[2]=m[2]*c+mv1*s;
+        m[2]=m[2]*c+mv1*s;
 
-//         m[6]=m[6]*c+mv5*s;
+        m[6]=m[6]*c+mv5*s;
 
-//         m[10]=m[10]*c+mv9*s;
+        m[10]=m[10]*c+mv9*s;
 
-//       },
-
-    
-
-//       rotateY: function(m, angle) {
-
-//         var c = Math.cos(angle);
-
-//         var s = Math.sin(angle);
-
-//         var mv0=m[0], mv4=m[4], mv8=m[8];
-
-//         m[0]=c*m[0]+s*m[2];
-
-//         m[4]=c*m[4]+s*m[6];
-
-//         m[8]=c*m[8]+s*m[10];
+      },
 
     
 
-//         m[2]=c*m[2]-s*mv0;
+      rotateY: function(m, angle) {
 
-//         m[6]=c*m[6]-s*mv4;
+        var c = Math.cos(angle);
 
-//         m[10]=c*m[10]-s*mv8;
+        var s = Math.sin(angle);
 
-//       },
+        var mv0=m[0], mv4=m[4], mv8=m[8];
 
-    
+        m[0]=c*m[0]+s*m[2];
 
-//       rotateZ: function(m, angle) {
+        m[4]=c*m[4]+s*m[6];
 
-//         var c = Math.cos(angle);
-
-//         var s = Math.sin(angle);
-
-//         var mv0=m[0], mv4=m[4], mv8=m[8];
-
-//         m[0]=c*m[0]-s*m[1];
-
-//         m[4]=c*m[4]-s*m[5];
-
-//         m[8]=c*m[8]-s*m[9];
+        m[8]=c*m[8]+s*m[10];
 
     
 
-//         m[1]=c*m[1]+s*mv0;
+        m[2]=c*m[2]-s*mv0;
 
-//         m[5]=c*m[5]+s*mv4;
+        m[6]=c*m[6]-s*mv4;
 
-//         m[9]=c*m[9]+s*mv8;
+        m[10]=c*m[10]-s*mv8;
 
-//       },
+      },
 
-//       translateZ: function(m, t){
+    
 
-//         m[14]+=t;
+      rotateZ: function(m, angle) {
 
-//       },
+        var c = Math.cos(angle);
 
-//       translateY: function(m, t){
+        var s = Math.sin(angle);
 
-//         m[13]+=t;
+        var mv0=m[0], mv4=m[4], mv8=m[8];
 
-//       },
+        m[0]=c*m[0]-s*m[1];
 
-//       translateX: function(m, t){
+        m[4]=c*m[4]-s*m[5];
 
-//         m[12]+=t;
+        m[8]=c*m[8]-s*m[9];
 
-//       },
+    
 
-//       setPosition: function(m, x, y, z) {
-//         m[12] = x, m[13] = y, m[14] = z;
-//       },
+        m[1]=c*m[1]+s*mv0;
 
-//       multiply: function(m1, m2) {
-//         var res = this.get_I4();
-//         var N = 4;
+        m[5]=c*m[5]+s*mv4;
 
+        m[9]=c*m[9]+s*mv8;
+
+      },
+
+      translateZ: function(m, t){
+
+        m[14]+=t;
+
+      },
+
+      translateY: function(m, t){
+
+        m[13]+=t;
+
+      },
+
+      translateX: function(m, t){
+
+        m[12]+=t;
+
+      },
+
+      setPosition: function(m, x, y, z) {
+        m[12] = x, m[13] = y, m[14] = z;
+      },
+
+      multiply: function(m1, m2) {
+        var res = this.get_I4();
+        var N = 4;
+      },
       teleportZ: function(m, t){
 
         m[14]=t;
@@ -315,15 +312,4 @@
       setPosition: function(m, x, y, z) {
         m[12] = x, m[13] = y, m[14] = z;
       },
-=======
-//         for(var i=0;i<N;i++) {
-//           for(var j = 0; j < N;j++) {
-//             res[i*N+j] = 0;
-//             for(var k = 0; k < N; k++) {
-//               res[i*N+j] += m1[i*N+k] * m2[k*N+j];
-//             }
-//           }
-//         }
-//         return res;
-//       }
-};
+}
