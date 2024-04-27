@@ -4,7 +4,8 @@ class Manusia{
     muka = null;
     objects = [];
     matrixes = [];
-
+    timer = 0;
+    up = true;
     constructor(GL, posX, posY, posZ, shader_vertex_source, shader_fragment_source) {
         //generate vertex and face
         var tinggi = 2.0;
@@ -85,7 +86,22 @@ class Manusia{
 
 
         this.objects.forEach(object => {
-            LIBS.rotateX(object.MODEL_MATRIX, 1);
+            if (object == this.upper_arm) {
+                if (this.up) {
+                    LIBS.rotateX(object.MODEL_MATRIX, 0.01);
+                    this.timer++;
+                }
+                else {
+                    LIBS.rotateX(object.MODEL_MATRIX, -0.01);
+                    this.timer--
+                }
+                if (this.up && this.timer > 100) {
+                    this.up = false;
+                }
+                if (!this.up && this.timer < 0) {
+                    this.up = true;
+                }
+            }
 
             object.render(VIEW_MATRIX, PROJECTION_MATRIX);
         });
