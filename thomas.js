@@ -17,7 +17,12 @@ class Thomas{
     counter = null;
     front_slope = null;
     chimney_black = null;
-    blue_buldge;
+    blue_buldge = null;
+    tiang1= null;
+    tiang2= null;
+    tiang3= null;
+    tiang4= null;
+    roof = null;
     constructor(GL, posX, posY, posZ, shader_vertex_source, shader_fragment_source) {
         //generate vertex and face
         var tinggi = 2.0;
@@ -48,6 +53,13 @@ class Thomas{
         
         var blue_buldge_vertex = SHAPE.elipticParaboloid(GL, 0.25, 20, 30, true, 1.5, 2, -3.2, r, g, b);
 
+        var tiang1_vertex = SHAPE.rectangle(3, 2.5, 0.3, 0, -1, -4, r, g, b);
+        var tiang2_vertex = SHAPE.rectangle(3, 0.2, 0.3, 0, -1.5, -4, r, g, b);
+        var tiang3_vertex = SHAPE.rectangle(3, 2.5, 0.3, 0, -2.8, -4, r, g, b);
+        var tiang4_vertex = SHAPE.rectangle(3, 0.2, 0.3, 2.3, -1.5, -4, r, g, b);
+
+        var roof_vertex = SHAPE.cylinderRoof(3, 1.5, 1, -2, 1.25, 0, 0, 0);
+
         this.body = new MyObject(GL, body_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
         this.face_front = new MyObject(GL, face_front_vertex, cylinderFaces, shader_vertex_source, shader_fragment_source);
         this.face_back = new MyObject(GL, face_back_vertex, cylinderFaces, shader_vertex_source, shader_fragment_source);
@@ -57,6 +69,11 @@ class Thomas{
         this.front_slope = new MyObject(GL, slope_vertex, slopeFaces, shader_vertex_source, shader_fragment_source);
         this.chimney_black = new MyObject(GL, black_chim_vertex.getInterleaved(), black_chim_vertex.getFaces(), shader_vertex_source, shader_fragment_source);
         this.blue_buldge = new MyObject(GL, blue_buldge_vertex.getInterleaved(), blue_buldge_vertex.getFaces(), shader_vertex_source, shader_fragment_source);
+        this.tiang1 = new MyObject(GL, tiang1_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
+        this.tiang2 = new MyObject(GL, tiang2_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
+        this.tiang3 = new MyObject(GL, tiang3_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
+        this.tiang4 = new MyObject(GL, tiang4_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
+        this.roof = new MyObject(GL, roof_vertex, SHAPE.roofFaces(roof_vertex), shader_vertex_source, shader_fragment_source);
 
         this.roda1 = new Roda(GL, 1, 0.1, posX + 2.5, posY - 0.7, posZ - 2.5, shader_vertex_source, shader_fragment_source, LIBS.get_I4());
         this.roda2 = new Roda(GL, 1, 0.1, posX + 2.5, posY - 0.7, posZ + 0, shader_vertex_source, shader_fragment_source, LIBS.get_I4());
@@ -80,6 +97,11 @@ class Thomas{
         this.objects.push(this.front_slope);
         this.objects.push(this.chimney_black);
         this.objects.push(this.blue_buldge);
+        this.objects.push(this.tiang1);
+        this.objects.push(this.tiang2);
+        this.objects.push(this.tiang3);
+        this.objects.push(this.tiang4);
+        this.objects.push(this.roof);
 
         this.counter = this.objects.length;
     }

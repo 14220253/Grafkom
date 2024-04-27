@@ -322,4 +322,61 @@ var SHAPE = {
 
     return sphere;
     },
+    
+    cylinderRoof: function(rad, lebar, posX, posY, posZ, r, g, blu) {
+        var vertex = [];
+        for (var i=45;i<145;i+= 0.01) {
+            var a = rad*Math.cos((i/180)*Math.PI) + posY;
+            var b = rad*Math.sin((i/180)*Math.PI) + posX;
+
+            vertex.push(-lebar + posZ);
+            vertex.push(a);
+            vertex.push(-b);
+    
+            vertex.push(r);
+            vertex.push(g);
+            vertex.push(blu);
+
+            vertex.push(lebar + posZ);
+            vertex.push(a);
+            vertex.push(-b);
+    
+            vertex.push(r);
+            vertex.push(g);
+            vertex.push(blu);
+
+            
+
+            vertex.push(lebar + posZ);
+            vertex.push(a);
+            vertex.push(-b - 0.3);
+    
+            vertex.push(r);
+            vertex.push(g);
+            vertex.push(blu);
+
+            vertex.push(-lebar + posZ);
+            vertex.push(a);
+            vertex.push(-b - 0.3);
+    
+            vertex.push(r);
+            vertex.push(g);
+            vertex.push(blu);
+        }
+        return vertex;
+    },
+    roofFaces: function(vertex) {
+        var faces = [];
+        for (var i = 0;i< (vertex.length / 7);i+=2) {
+            faces.push(i);
+            faces.push(i+1);
+            faces.push(i+2);
+    
+            faces.push(i+1);
+            faces.push(i+2);
+            faces.push(i+3);
+        }
+        
+        return faces;
+    },
 }

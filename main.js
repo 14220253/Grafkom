@@ -55,7 +55,7 @@ function main(){
 
     var mouseDown = function(e) {
         drag = true;
-        x_prev = e.pageX, y_prev = e.pageY;
+        x_prev = e.pageX;
         e.preventDefault();
         return false;
       };
@@ -67,10 +67,9 @@ function main(){
       var mouseMove = function(e) {
         if (!drag) return false;
         dX = (e.pageX-x_prev) * Math.PI / CANVAS.width,
-          dY = (e.pageY-y_prev) * Math.PI / CANVAS.height;
         THETA += dX;
         PHI += dY;
-        x_prev = e.pageX, y_prev = e.pageY;
+        x_prev = e.pageX;
         e.preventDefault();
       };
 
