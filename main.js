@@ -129,9 +129,6 @@ function main(){
     let cube_size = 500.0;
     //vertices of object
     var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.9, 0.9, 0.9);
-    let cube_size = 10.0;
-    //vertices of object
-    var cube = SHAPE.cube(cube_size, 0, 0, -50, 0.2, 0.6, 1);
   
     var cube_faces = SHAPE.squareFaces();
 
@@ -153,19 +150,22 @@ function main(){
 
 
     var thomas = new Thomas(GL, 0, 0, 0, shader_vertex_source, shader_fragment_source);
+    var manusia = new Manusia(GL, 0, 0, 0, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
 
+    manusia.setup();
     thomas.setup();
     sky.setup();
-
-    // LIBS.translateZ(VIEW_MATRIX, -10);
+    
+    // LIBS.translateZ(VIEW_MATRIX, -50);
+    // LIBS.translateY(VIEW_MATRIX, -5);
 
     var time_prev = 0;
     var animate = function(time){
-        var matrix = VIEW_PROJECTION_MATRIX;
+        // var matrix = VIEW_PROJECTION_MATRIX;
 
-        LIBS.translateX(matrix, THETA);
-        LIBS.translateY(matrix, PHI);
+        // LIBS.translateX(matrix, THETA);
+        // LIBS.translateY(matrix, PHI);
         // LIBS.translateZ(matrix, -THETA);
 
         var dt = time-time_prev;
@@ -176,11 +176,10 @@ function main(){
         MODEL_MATRIX = LIBS.get_I4();
         LIBS.rotateY(VIEW_MATRIX, THETA);
         LIBS.rotateX(VIEW_MATRIX, PHI);
+        
 
         
         MODEL_MATRIX2 = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX2, THETA);
-        LIBS.rotateX(MODEL_MATRIX2, PHI);
         time_prev = time;
 
         THETA = 0;
@@ -199,6 +198,8 @@ function main(){
         sky.MODEL_MATRIX = MODEL_MATRIX;
         sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
+        manusia.MODEL_MATRIX = MODEL_MATRIX2;
+        manusia.render(VIEW_MATRIX, PROJECTION_MATRIX);
         thomas.MODEL_MATRIX = MODEL_MATRIX2;
         thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
