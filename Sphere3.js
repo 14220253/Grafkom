@@ -216,7 +216,7 @@ Sphere3.prototype =
         {
             stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
             xy = this.radius * Math.cos(stackAngle);    // r * cos(u)
-            z = this.radius * Math.sin(stackAngle);     // r * sin(u)
+            z = this.radius * Math.sin(stackAngle) * this.rz;     // r * sin(u)
 
             // add (sectorCount+1) vertices per stack
             // the first and last vertices have same position and normal, but different tex coords
@@ -225,8 +225,8 @@ Sphere3.prototype =
                 sectorAngle = j * sectorStep;           // starting from 0 to 2pi
 
                 // vertex position
-                x = xy * Math.cos(sectorAngle);         // r * cos(u) * cos(v)
-                y = xy * Math.sin(sectorAngle) * 1.5;         // r * cos(u) * sin(v)
+                x = xy * Math.cos(sectorAngle) * this.rx;         // r * cos(u) * cos(v)
+                y = xy * Math.sin(sectorAngle) * this.ry;         // r * cos(u) * sin(v)
                 this.addVertex(ii, x, y, z);
 
                 // normalized vertex normal

@@ -138,11 +138,12 @@ function main(){
     LIBS.translateZ(cameraMatrix, 10);
     //matrix 
     var PROJECTION_MATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height,0.01,9999); //a ratio, 1 itu zmin diana jarak terdekat 100 merupakan zmax yaitu jarak terjauh
-    var MODEL_MATRIX = LIBS.get_I4();
+    var MM_SKY = LIBS.get_I4();
+    var MM_THOMAS = LIBS.get_I4();
+    var MM_MANUSIA = LIBS.get_I4();
     var VIEW_MATRIX = LIBS.inverse(cameraMatrix);
-    var VIEW_PROJECTION_MATRIX = LIBS.multiply(PROJECTION_MATRIX, VIEW_MATRIX);
 
-    var MODEL_MATRIX2 = LIBS.get_I4();
+    
 
     // LIBS.translateY(VIEW_MATRIX, 0);
     var time_prev = 0;
@@ -173,13 +174,10 @@ function main(){
           dX *= AMORTIZATION, dY *= AMORTIZATION;
           THETA += dX, PHI += dY;
         }
-        MODEL_MATRIX = LIBS.get_I4();
+        
         LIBS.rotateY(VIEW_MATRIX, THETA);
         LIBS.rotateX(VIEW_MATRIX, PHI);
         
-
-        
-        MODEL_MATRIX2 = LIBS.get_I4();
         time_prev = time;
 
         THETA = 0;
@@ -188,19 +186,19 @@ function main(){
         LIBS.translateX(VIEW_MATRIX, dx);
         LIBS.translateY(VIEW_MATRIX, dy);
         LIBS.translateZ(VIEW_MATRIX, dz);
-        // GL.viewport(0,0,CANVAS.width,CANVAS.height);
+        GL.viewport(0,0,CANVAS.width,CANVAS.height);
         GL.clearColor(0,0,0,0);
         GL.enable(GL.DEPTH_TEST);
         GL.depthFunc(GL.LEQUAL);
         GL.clearDepth(cube_size);
         GL.clear(GL.COLOR_BUFFER_BIT | GL.D_BUFFER_BIT);
 
-        sky.MODEL_MATRIX = MODEL_MATRIX;
+        sky.MODEL_MATRIX = MM_SKY;
         sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
-
-        manusia.MODEL_MATRIX = MODEL_MATRIX2;
+        MM_MANUSIA = LIBS.scaleflex(MM_MANUSIA, 2,2,2);
+        manusia.MODEL_MATRIX = MM_MANUSIA;
         manusia.render(VIEW_MATRIX, PROJECTION_MATRIX);
-        // thomas.MODEL_MATRIX = MODEL_MATRIX2;
+        // thomas.MODEL_MATRIX = MM_THOMAS;
         // thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         GL.flush();
