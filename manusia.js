@@ -78,6 +78,10 @@ class Manusia{
         this.objects.forEach(object => {
             
             object.MODEL_MATRIX = LIBS.scaleuniform(object.MODEL_MATRIX, 3);
+
+            if (object == this.upper_arm) {
+                LIBS.rotateX(object.MODEL_MATRIX, 10);
+            }
             
             object.setup();
         });
@@ -87,20 +91,20 @@ class Manusia{
 
         this.objects.forEach(object => {
             if (object == this.upper_arm) {
-                if (this.up) {
-                    LIBS.rotateX(object.MODEL_MATRIX, 0.01);
-                    this.timer++;
-                }
-                else {
-                    LIBS.rotateX(object.MODEL_MATRIX, -0.01);
-                    this.timer--
-                }
-                if (this.up && this.timer > 100) {
-                    this.up = false;
-                }
-                if (!this.up && this.timer < 0) {
-                    this.up = true;
-                }
+            //     if (this.up) {
+            //         LIBS.rotateX(object.MODEL_MATRIX, 0.01);
+            //         this.timer++;
+            //     }
+            //     else {
+            //         LIBS.rotateX(object.MODEL_MATRIX, -0.01);
+            //         this.timer--
+            //     }
+            //     if (this.up && this.timer > 100) {
+            //         this.up = false;
+            //     }
+            //     if (!this.up && this.timer < 0) {
+            //         this.up = true;
+            //     }
             }
 
             object.render(VIEW_MATRIX, PROJECTION_MATRIX);
