@@ -129,9 +129,6 @@ function main(){
     let cube_size = 500.0;
     //vertices of object
     var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.9, 0.9, 0.9);
-    let cube_size = 10.0;
-    //vertices of object
-    var cube = SHAPE.cube(cube_size, 0, 0, -50, 0.2, 0.6, 1);
   
     var cube_faces = SHAPE.squareFaces();
 
