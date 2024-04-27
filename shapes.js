@@ -226,7 +226,7 @@ var SHAPE = {
         
         return faces;
     },
-    hyperboloid1: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    hyperboloid12: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
     let sphere = new Sphere(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
 
     sphere.setRadius(radius);
@@ -236,7 +236,7 @@ var SHAPE = {
 
     return sphere;
     },
-    hyperboloid: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    hyperboloid1: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
     let sphere = new Sphere2(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
 
     sphere.setRadius(radius);
@@ -311,5 +311,15 @@ var SHAPE = {
     },
     slopeFormula: function(x) {
         return -((x - 2)/1.5)^3;
-    }
+    },
+    elipticParaboloid: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    let sphere = new Sphere3(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
+
+    sphere.setRadius(radius);
+    sphere.setSectorCount(sector);
+    sphere.setStackCount(stack);
+    sphere.setSmooth(smooth);
+
+    return sphere;
+    },
 }
