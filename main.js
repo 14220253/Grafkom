@@ -133,7 +133,6 @@ function main(){
 
     let cube_size = 500.0;
     //vertices of object
-    var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.5, 0.7, 1);
   
     var cube_faces = SHAPE.squareFaces();
 
@@ -163,7 +162,6 @@ function main(){
 
 
     var thomas = new Thomas(GL, -10, 6, 0, shader_vertex_source, shader_fragment_source);
-    var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
     var sea = new MyObject(GL, sea_v, cube_faces, shader_vertex_source, shader_fragment_source);
     var island = new MyObject(GL, island_obj.getInterleaved(), island_obj.getFaces(), shader_vertex_source, shader_fragment_source);
     var kincirangin = new Kincir(GL, shader_vertex_source, shader_fragment_source, 15.7);
@@ -172,7 +170,6 @@ function main(){
     var bulan = new MyObject(GL, bulan_v.getInterleaved(), bulan_v.getFaces(), shader_vertex_source, shader_fragment_source);
 
     thomas.setup();
-    sky.setup();
     sea.setup();
     island.setup();
     kincirangin.setup();
@@ -187,7 +184,11 @@ function main(){
 
     var PLANET_MM = LIBS.get_I4();
 
-    var time_prev = 0;
+    var timer = 0;
+    var reverse = false;
+    var skyR = 0.5;
+    var skyG = 0.7;
+    var skyB = 1;
     var animate = function(time){
         var matrix = VIEW_PROJECTION_MATRIX;
 
@@ -207,6 +208,31 @@ function main(){
 
         THETA = 0;
         PHI = 0;
+
+        if (timer  > 500 && reverse == false) {
+            reverse = true;
+        }
+        if (timer  < 0 && reverse == true) {
+            reverse = false;
+        }
+        if (!reverse){
+            skyR -= 0.007;
+            skyG -= 0.004;
+            skyB -= 0.003;
+            var cube = SHAPE.cube(cube_size, 0, 0, 0, skyR, skyG, skyB);
+            timer++;
+        }
+        else {
+            if (skyR <= 0.5) {
+                skyR += 0.007;
+                skyG += 0.004;
+                skyB += 0.003;
+            }
+            var cube = SHAPE.cube(cube_size, 0, 0, 0, skyR, skyG, skyB);
+            timer--;
+        }
+        var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
+        sky.setup();
 
         LIBS.translateX(VIEW_MATRIX, dx);
         LIBS.translateY(VIEW_MATRIX, dy);
@@ -236,7 +262,7 @@ function main(){
         bulan.MODEL_MATRIX = PLANET_MM;
         bulan.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
-        LIBS.rotateZ(PLANET_MM, 0.001);
+        LIBS.rotateZ(PLANET_MM, 0.0062);
 
         GL.flush();
 
