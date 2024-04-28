@@ -399,4 +399,39 @@ var SHAPE = {
     
     return sphere;
     },
+    cone: function(rad,x,y,z,height,r,g,b) {
+        var list = [];
+        list.push(0 + x);
+        list.push(0 + y);
+        list.push(0 + z);
+        list.push(r);
+        list.push(g); 
+        list.push(b);
+        for  (var i = 0; i < 361; i++) {
+            var a = rad * Math.cos((i/180) * Math.PI) ;
+            var b = rad * Math.sin((i/180) * Math.PI) ;
+            list.push(a + x);
+            list.push(height + y);
+            list.push(b + z);
+            list.push(r);
+            list.push(g);
+            list.push(b);
+        }
+        return list;
+    },
+    
+    coneFaces: function() {
+        var list = [];
+        for (var i = 1; i < 361; i++) {
+            list.push(0);
+            list.push(i);
+            list.push(i+1);
+        }
+        for (var i = 1; i < 361; i++) {
+            list.push(1);
+            list.push(i+1);
+            list.push(i+2);
+        }
+        return list;
+    },
 }
