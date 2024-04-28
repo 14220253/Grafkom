@@ -61,58 +61,67 @@ class Manusia{
         this.feet_right = new MyObject(GL, feet_vertex.getInterleaved(), feet_vertex.getFaces(), shader_vertex_source, shader_fragment_source);
 
         //head
-        LIBS.translateY(this.head.MODEL_MATRIX, 2);
+        LIBS.translateY(this.head.MODEL_MATRIX, 2 + posY);
+        LIBS.translateX(this.head.MODEL_MATRIX, 0 + posX);
         
         //eyes
-        LIBS.translateY(this.eye_left.MODEL_MATRIX, 2);
-        LIBS.translateY(this.eye_right.MODEL_MATRIX, 2);
+        LIBS.translateY(this.eye_left.MODEL_MATRIX, 2 + posX);
+        LIBS.translateY(this.eye_right.MODEL_MATRIX, 2 + posY);
 
         //upper left arm
-        LIBS.translateX(this.upper_arm_left.MODEL_MATRIX, 0.8);
-        LIBS.translateY(this.upper_arm_left.MODEL_MATRIX, 0.7);
+        LIBS.translateX(this.upper_arm_left.MODEL_MATRIX, 0.8 + posX);
+        LIBS.translateY(this.upper_arm_left.MODEL_MATRIX, 0.7 + posY);
 
         //upper right arm
-        LIBS.translateX(this.upper_arm_right.MODEL_MATRIX, -0.8);
-        LIBS.translateY(this.upper_arm_right.MODEL_MATRIX, 0.7);
+        LIBS.translateX(this.upper_arm_right.MODEL_MATRIX, -0.8 + posX);
+        LIBS.translateY(this.upper_arm_right.MODEL_MATRIX, 0.7 + posY);
 
         //lower left arm
-        LIBS.translateX(this.lower_arm_left.MODEL_MATRIX, 0.3);
-        LIBS.translateY(this.lower_arm_left.MODEL_MATRIX, 0.4);
+        LIBS.translateX(this.lower_arm_left.MODEL_MATRIX, 0.3 + posX);
+        LIBS.translateY(this.lower_arm_left.MODEL_MATRIX, 0.4 + posY);
 
         //lower right arm
-        LIBS.translateX(this.lower_arm_right.MODEL_MATRIX, -0.8);
-        LIBS.translateY(this.lower_arm_right.MODEL_MATRIX, 0.7);
+        LIBS.translateX(this.lower_arm_right.MODEL_MATRIX, -0.8 + posX);
+        LIBS.translateY(this.lower_arm_right.MODEL_MATRIX, 0.7 + posY);
 
         //hands
-        LIBS.translateX(this.hand_left.MODEL_MATRIX, 2.2);
-        LIBS.translateY(this.hand_left.MODEL_MATRIX, -3.5);
+        LIBS.translateX(this.hand_left.MODEL_MATRIX, 2.2 + posX);
+        LIBS.translateY(this.hand_left.MODEL_MATRIX, -3.5 + posY);
 
-        LIBS.translateX(this.hand_right.MODEL_MATRIX, -0.8);
-        LIBS.translateY(this.hand_right.MODEL_MATRIX, 0.7);
+        LIBS.translateX(this.hand_right.MODEL_MATRIX, -0.8 + posX);
+        LIBS.translateY(this.hand_right.MODEL_MATRIX, 0.7 + posY);
 
         //upper left leg
-        LIBS.translateY(this.upper_leg_left.MODEL_MATRIX, -1.2)
-        LIBS.translateX(this.upper_leg_left.MODEL_MATRIX, 0.3)
+        LIBS.translateY(this.upper_leg_left.MODEL_MATRIX, -1.2 + posY);
+        LIBS.translateX(this.upper_leg_left.MODEL_MATRIX, 0.3 + posX);
 
         //upper right leg
-        LIBS.translateY(this.upper_leg_right.MODEL_MATRIX, -1.2)
-        LIBS.translateX(this.upper_leg_right.MODEL_MATRIX, -0.3)
+        LIBS.translateY(this.upper_leg_right.MODEL_MATRIX, -1.2 + posY);
+        LIBS.translateX(this.upper_leg_right.MODEL_MATRIX, -0.3 + posX);
 
         //lower left leg
-        LIBS.translateY(this.lower_leg_left.MODEL_MATRIX, -1.2)
-        LIBS.translateX(this.lower_leg_left.MODEL_MATRIX, 0.45)
+        LIBS.translateY(this.lower_leg_left.MODEL_MATRIX, -1.2 + posY);
+        LIBS.translateX(this.lower_leg_left.MODEL_MATRIX, 0.45 + posX);
 
         //lower right leg
-        LIBS.translateY(this.lower_leg_right.MODEL_MATRIX, -1.2)
-        LIBS.translateX(this.lower_leg_right.MODEL_MATRIX, -0.45)
+        LIBS.translateY(this.lower_leg_right.MODEL_MATRIX, -1.2 + posY);
+        LIBS.translateX(this.lower_leg_right.MODEL_MATRIX, -0.45 + posX);
 
         //feet
-        LIBS.translateY(this.feet_left.MODEL_MATRIX, -1.2);
-        LIBS.translateX(this.feet_left.MODEL_MATRIX, 0.45);
+        LIBS.translateY(this.feet_left.MODEL_MATRIX, -1.2 + posY);
+        LIBS.translateX(this.feet_left.MODEL_MATRIX, 0.45 + posX);
         
-        LIBS.translateY(this.feet_right.MODEL_MATRIX, -1.2);
-        LIBS.translateX(this.feet_right.MODEL_MATRIX, -0.45);
+        LIBS.translateY(this.feet_right.MODEL_MATRIX, -1.2 + posY);
+        LIBS.translateX(this.feet_right.MODEL_MATRIX, -0.45 + posX);
         
+        LIBS.translateY(this.nose.MODEL_MATRIX, 0 + posY);
+        LIBS.translateX(this.nose.MODEL_MATRIX, 0 + posX);
+        
+        LIBS.translateY(this.eye_left.MODEL_MATRIX, 0);
+        LIBS.translateX(this.eye_left.MODEL_MATRIX, 0 + posX);
+        
+        LIBS.translateY(this.eye_right.MODEL_MATRIX, 0);
+        LIBS.translateX(this.eye_right.MODEL_MATRIX, 0 + posX);
 
 
         this.objects.push(this.head);
@@ -166,7 +175,6 @@ class Manusia{
         });
     }
     render(VIEW_MATRIX, PROJECTION_MATRIX){
-        console.log(this.objects.length);
         this.objects.forEach(object => {
             if (object == this.upper_arm_right || object == this.lower_arm_right || object == this.hand_right) {
                 if (this.up) {

@@ -139,7 +139,9 @@ function main(){
 
     var sea_v = SHAPE.rectangle(cube_size, cube_size, 2, -cube_size/2, -5, -cube_size/2, 0, 0, 1);
 
-    var island_obj = SHAPE.sphere(GL, 20, 18, 36, true, 0, -15, 0, 1, 1, 0);
+    var island_obj = SHAPE.sphere(GL, 20, 18, 36, true, 0, -15, 0, 1, 1, 0, 2, 1, 2);
+
+    var matahari_v = SHAPE.sphere(GL, 30, 18, 36, true, 2, 90, -300, 1, 1, 0, 1, 1, 1);
 
     
     var cameraMatrix = LIBS.get_I4();
@@ -164,7 +166,8 @@ function main(){
     var sea = new MyObject(GL, sea_v, cube_faces, shader_vertex_source, shader_fragment_source);
     var island = new MyObject(GL, island_obj.getInterleaved(), island_obj.getFaces(), shader_vertex_source, shader_fragment_source);
     var kincirangin = new Kincir(GL, shader_vertex_source, shader_fragment_source, 15.7);
-    var manusia = new Manusia(GL, 0, 0, 0, 1, shader_vertex_source, shader_fragment_source);
+    var manusia = new Manusia(GL, 10, 10, 0, 1, shader_vertex_source, shader_fragment_source);
+    var matahari = new MyObject(GL, matahari_v.getInterleaved(), matahari_v.getFaces(), shader_vertex_source, shader_fragment_source);
 
     thomas.setup();
     sky.setup();
@@ -172,6 +175,7 @@ function main(){
     island.setup();
     kincirangin.setup();
     manusia.setup();
+    matahari.setup();
 
     LIBS.translateY(VIEW_MATRIX, -10);
     LIBS.translateZ(VIEW_MATRIX, -20);
@@ -225,6 +229,7 @@ function main(){
         thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         kincirangin.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        matahari.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         GL.flush();
 

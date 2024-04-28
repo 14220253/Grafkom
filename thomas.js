@@ -173,7 +173,7 @@ class Thomas{
             }
 
 
-            LIBS.translateZ(object.MODEL_MATRIX, 0.005);
+            LIBS.translateZ(object.MODEL_MATRIX, 0.008);
             
             object.render(VIEW_MATRIX, PROJECTION_MATRIX);
         });

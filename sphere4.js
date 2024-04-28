@@ -19,7 +19,7 @@
 // UPDATED: 2022-12-09
 ///////////////////////////////////////////////////////////////////////////////
 
-let Sphere4 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0, posY=0, posZ=0, r=1, g=1, b=1)
+let Sphere4 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0, posY=0, posZ=0, r=1, g=1, b=1, scaleX=1, scaleY=1, scaleZ=1)
 {
     this.gl = gl;
     if(!gl)
@@ -31,6 +31,9 @@ let Sphere4 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0,
     this.posX = posX;
     this.posY = posY;
     this.posZ = posZ;
+    this.scaleX = scaleX;
+    this.scaleY = scaleY;
+    this.scaleZ = scaleZ;
     this.radius = 1;
     this.sectorCount = 36;
     this.stackCount = 18;
@@ -212,7 +215,7 @@ Sphere4.prototype =
             //bola
             stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
             xy = this.radius * Math.cos(stackAngle);    // r * cos(u)
-            z = this.radius * Math.sin(stackAngle) * 2;     // r * sin(u)
+            z = this.radius * Math.sin(stackAngle) * this.scaleZ;     // r * sin(u)
 
             //hyperboloid 1 sisi
             // stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
@@ -245,8 +248,8 @@ Sphere4.prototype =
                 sectorAngle = j * sectorStep;           // starting from 0 to 2pi
 
                 // vertex position
-                x = xy * Math.cos(sectorAngle) * 2;         // r * cos(u) * cos(v)
-                y = xy * Math.sin(sectorAngle);         // r * cos(u) * sin(v)
+                x = xy * Math.cos(sectorAngle) * this.scaleX;         // r * cos(u) * cos(v)
+                y = xy * Math.sin(sectorAngle) * this.scaleY;         // r * cos(u) * sin(v)
 
                 // elliptic cone / elliptic paraboloid
                 // x = this.radius * stackAngle * Math.cos(sectorAngle);         // r * cos(u) * cos(v)
