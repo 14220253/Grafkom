@@ -32,6 +32,7 @@ class Manusia{
         // var slopeFaces = SHAPE.normalFaces(slope_vertex);
         // var black_chim_vertex = SHAPE.hyperboloid(GL, 0.75, 20, 30, true, 0, 3, 0, 0, 0, 0);      
 
+
         this.head = new MyObject(GL, head_vertex.getInterleaved(), head_vertex.getFaces(), shader_vertex_source, shader_fragment_source);
 
         this.nose = new MyObject(GL, nose_vertex, nose_faces, shader_vertex_source, shader_fragment_source);
@@ -165,7 +166,7 @@ class Manusia{
         });
     }
     render(VIEW_MATRIX, PROJECTION_MATRIX){
-
+        console.log(this.objects.length);
         this.objects.forEach(object => {
             if (object == this.upper_arm_right || object == this.lower_arm_right || object == this.hand_right) {
                 if (this.up) {

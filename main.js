@@ -151,7 +151,8 @@ function main(){
     var VIEW_MATRIX = LIBS.inverse(cameraMatrix);
     var VIEW_PROJECTION_MATRIX = LIBS.multiply(PROJECTION_MATRIX, VIEW_MATRIX);
 
-    var MODEL_MATRIX2 = LIBS.get_I4();
+    var MODEL_MATRIX_THOMAS = LIBS.get_I4();
+    var MODEL_MATRIX_MANUSIA = LIBS.get_I4();
 
     // LIBS.translateY(VIEW_MATRIX, 0);
     var time_prev = 0;
@@ -217,10 +218,10 @@ function main(){
         // sea.render(VIEW_MATRIX, PROJECTION_MATRIX);
         // island.MODEL_MATRIX = MODEL_MATRIX;
         // island.render(VIEW_MATRIX, PROJECTION_MATRIX);
-        manusia.MODEL_MATRIX = MODEL_MATRIX;
+        manusia.MODEL_MATRIX = MODEL_MATRIX_MANUSIA;
         manusia.render(VIEW_MATRIX, MODEL_MATRIX);
 
-        // thomas.MODEL_MATRIX = MODEL_MATRIX2;
+        // thomas.MODEL_MATRIX = MODEL_MATRIX_THOMAS;
         // thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         // kincirangin.render(VIEW_MATRIX, PROJECTION_MATRIX);
