@@ -163,12 +163,14 @@ function main(){
     var sea = new MyObject(GL, sea_v, cube_faces, shader_vertex_source, shader_fragment_source);
     var island = new MyObject(GL, island_obj.getInterleaved(), island_obj.getFaces(), shader_vertex_source, shader_fragment_source);
     var kincirangin = new Kincir(GL, shader_vertex_source, shader_fragment_source, 15.7);
+    var manusia = new Manusia(GL, 0, 0, 0, 1, shader_vertex_source, shader_fragment_source);
 
     thomas.setup();
     sky.setup();
     sea.setup();
     island.setup();
     kincirangin.setup();
+    manusia.setup();
 
     LIBS.translateY(VIEW_MATRIX, -10);
     LIBS.translateZ(VIEW_MATRIX, -20);
@@ -215,6 +217,7 @@ function main(){
         sea.render(VIEW_MATRIX, PROJECTION_MATRIX);
         island.MODEL_MATRIX = MODEL_MATRIX;
         island.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        manusia.render(VIEW_MATRIX, MODEL_MATRIX);
 
         thomas.MODEL_MATRIX = MODEL_MATRIX2;
         thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
