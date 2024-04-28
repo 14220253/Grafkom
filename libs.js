@@ -216,6 +216,30 @@ var LIBS = {
         b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33,
       ];
     },
+
+    scaleflex: function (m, x, y, z) {
+      var sm = [x, 0, 0, 0,
+                0, y, 0, 0,
+                0, 0, z, 0,
+                0, 0, 0, 1];
+  
+      m[12] = m[12] * x;
+      m[13] = m[13] * y;
+      m[14] = m[14] * z;
+      return this.multiply(m, sm);
+    },
+  
+    scaleuniform: function (m, s) {
+      var sm = [1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1 / s];
+  
+      m[12] = m[12] * s;
+      m[13] = m[13] * s;
+      m[14] = m[14] * s;
+      return this.multiply(m, sm);
+    },
   
 
     inverse: function(m) {
