@@ -26,6 +26,7 @@ function main(){
         void main(void){
             gl_Position = PMatrix*VMatrix*MMatrix*vec4(position, 1.); 
             vColor = color;
+            gl_PointSize=20.0;
         }
 
     `;
@@ -34,9 +35,14 @@ function main(){
     var shader_fragment_source =`
         precision mediump float;
         varying vec3 vColor;
-            void main(void){
-                gl_FragColor = vec4(vColor,1.);
-            }
+        uniform float greyScality;
+        void main(void){
+            gl_FragColor = vec4(vColor,1.);
+            
+            float greyScaleValue = (vColor.r + vColor.g + vColor.b)/3.;
+            vec3 greyScaleColor = vec3(greyScaleValue, greyScaleValue, greyScaleValue);
+            vec3 color = mix(greyScaleColor, vColor, greyScality);
+        }
     `;
 
     //event listener
@@ -127,9 +133,13 @@ function main(){
 
     let cube_size = 500.0;
     //vertices of object
-    var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.9, 0.9, 0.9);
+    var cube = SHAPE.cube(cube_size, 0, 0, 0, 0.5, 0.7, 1);
   
     var cube_faces = SHAPE.squareFaces();
+
+    var sea_v = SHAPE.rectangle(cube_size, cube_size, 2, -cube_size/2, -5, -cube_size/2, 0, 0, 1);
+
+    var island_obj = SHAPE.sphere(GL, 20, 18, 36, true, 0, -15, 0, 1, 1, 0);
 
     
     var cameraMatrix = LIBS.get_I4();
@@ -148,13 +158,20 @@ function main(){
 
 
 
-    var thomas = new Thomas(GL, 0, 0, 0, shader_vertex_source, shader_fragment_source);
+    var thomas = new Thomas(GL, -10, 6, 0, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
+    var sea = new MyObject(GL, sea_v, cube_faces, shader_vertex_source, shader_fragment_source);
+    var island = new MyObject(GL, island_obj.getInterleaved(), island_obj.getFaces(), shader_vertex_source, shader_fragment_source);
+    var kincirangin = new Kincir(GL, shader_vertex_source, shader_fragment_source, 15.7);
 
     thomas.setup();
     sky.setup();
+    sea.setup();
+    island.setup();
+    kincirangin.setup();
 
-    // LIBS.translateZ(VIEW_MATRIX, -10);
+    LIBS.translateY(VIEW_MATRIX, -10);
+    LIBS.translateZ(VIEW_MATRIX, -20);
 
     var time_prev = 0;
     var animate = function(time){
@@ -194,9 +211,15 @@ function main(){
 
         sky.MODEL_MATRIX = MODEL_MATRIX;
         sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        sea.MODEL_MATRIX = MODEL_MATRIX;
+        sea.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        island.MODEL_MATRIX = MODEL_MATRIX;
+        island.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         thomas.MODEL_MATRIX = MODEL_MATRIX2;
         thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
+
+        kincirangin.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         GL.flush();
 

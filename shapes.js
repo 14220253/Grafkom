@@ -214,7 +214,7 @@ var SHAPE = {
     },
     cylinderFaces: function(vertex) {
         var faces = [];
-        for (var i = 0;i< vertex.length / 2;i+=2) {
+        for (var i = 0;i< vertex.length / 7;i+=2) {
             faces.push(i);
             faces.push(i+1);
             faces.push(i+2);
@@ -227,7 +227,7 @@ var SHAPE = {
         return faces;
     },
     hyperboloid12: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
-    let sphere = new Sphere(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
+    let sphere = new Sphere(GL, 1, 36, 18, false, posX -10, posY + 6, posZ + 0.1, r, g, b);
 
     sphere.setRadius(radius);
     sphere.setSectorCount(sector);
@@ -237,12 +237,13 @@ var SHAPE = {
     return sphere;
     },
     hyperboloid1: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
-    let sphere = new Sphere2(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
+    let sphere = new Sphere2(GL, 1, 36, 18, false, posX, -posZ + 1, -posY + 0.3, r, g, b);
 
     sphere.setRadius(radius);
     sphere.setSectorCount(sector);
     sphere.setStackCount(stack);
     sphere.setSmooth(smooth);
+
 
     return sphere;
     },
@@ -313,7 +314,7 @@ var SHAPE = {
         return -((x - 2)/1.5)^3;
     },
     elipticParaboloid: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
-    let sphere = new Sphere3(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
+    let sphere = new Sphere3(GL, 1, 36, 18, false, posX, posZ + 5.5, -posY - 1.5, r, g, b);
 
     sphere.setRadius(radius);
     sphere.setSectorCount(sector);
@@ -378,5 +379,15 @@ var SHAPE = {
         }
         
         return faces;
+    },
+    sphere: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    let sphere = new Sphere4(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
+
+    sphere.setRadius(radius);
+    sphere.setSectorCount(sector);
+    sphere.setStackCount(stack);
+    sphere.setSmooth(smooth);
+
+    return sphere;
     },
 }

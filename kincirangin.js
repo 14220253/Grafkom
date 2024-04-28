@@ -131,32 +131,32 @@ function main() {
 
     
     
-    var object = new KincirObject(generateCylinderVertices(0, -11, 0, 3, 3, 2, 2, 15, 0.7411764705882353, 0.6352941176470588, 0.41568627450980394), generateCylinderIndices(), shader_vertex_source, shader_fragment_source);
+    var object = new MyObject(generateCylinderVertices(0, -11, 0, 3, 3, 2, 2, 15, 0.7411764705882353, 0.6352941176470588, 0.41568627450980394), generateCylinderIndices(), shader_vertex_source, shader_fragment_source);
     object.setup();
-    var pipe = new KincirObject(generatePipeVertices(0, 0, 0, 0.3, 0.3, 3.5, 0.5490196078431373, 0.4549019607843137, 0.28627450980392155), generateCylinderIndices(), shader_vertex_source, shader_fragment_source);
+    var pipe = new MyObject(generatePipeVertices(0, 0, 0, 0.3, 0.3, 3.5, 0.5490196078431373, 0.4549019607843137, 0.28627450980392155), generateCylinderIndices(), shader_vertex_source, shader_fragment_source);
     pipe.setup();
-    var head = new KincirObject(createSphere(0, 4, 0, 2,2,2,100,100, 0.7098039215686275, 0.5882352941176471, 0.043137254901960784).vertices, createSphere(0,0,5, 2,2,2,100,100, 0, 0, 0).indices, shader_vertex_source, shader_fragment_source);
+    var head = new MyObject(createSphere(0, 4, 0, 2,2,2,100,100, 0.7098039215686275, 0.5882352941176471, 0.043137254901960784).vertices, createSphere(0,0,5, 2,2,2,100,100, 0, 0, 0).indices, shader_vertex_source, shader_fragment_source);
     head.setup();
 
-    var baling1 = new KincirObject(generateFanVertices(-0.5, 1, 4, 1, 0.5, 6, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var baling1 = new MyObject(generateFanVertices(-0.5, 1, 4, 1, 0.5, 6, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     baling1.setup();
-    var baling2 = new KincirObject(generateFanVertices(1, -0.5, 4, 6.5, 0.5, 1, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var baling2 = new MyObject(generateFanVertices(1, -0.5, 4, 6.5, 0.5, 1, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     baling2.setup();
-    var baling3 = new KincirObject(generateFanVertices(-0.5, -1, 4, 1, 0.5, -6, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var baling3 = new MyObject(generateFanVertices(-0.5, -1, 4, 1, 0.5, -6, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     baling3.setup();
-    var baling4 = new KincirObject(generateFanVertices(-1, -0.5, 4, -6.5, 0.5, 1, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var baling4 = new MyObject(generateFanVertices(-1, -0.5, 4, -6.5, 0.5, 1, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     baling4.setup();
 
-    var back1 = new KincirObject(generateFanVertices(-0.25, 0, 3.5, 0.5, 0.5, 3, 0, 0, 0), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var back1 = new MyObject(generateFanVertices(-0.25, 0, 3.5, 0.5, 0.5, 3, 0, 0, 0), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     back1.setup();
-    var back2 = new KincirObject(generateFanVertices(0, -0.25, 3.5, 3, 0.5, 0.5, 0, 0, 0), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var back2 = new MyObject(generateFanVertices(0, -0.25, 3.5, 3, 0.5, 0.5, 0, 0, 0), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     back2.setup();
-    var back3 = new KincirObject(generateFanVertices(-0.25, 0, 3.5, 0.5, 0.5, -3, 0, 0, 0), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var back3 = new MyObject(generateFanVertices(-0.25, 0, 3.5, 0.5, 0.5, -3, 0, 0, 0), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     back3.setup();
-    var back4 = new KincirObject(generateFanVertices(0, -0.25, 3.5, -3, 0.5, 0.5, 0, 0, 0), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var back4 = new MyObject(generateFanVertices(0, -0.25, 3.5, -3, 0.5, 0.5, 0, 0, 0), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     back4.setup();
     
-    var pintu = new KincirObject(generateFanVertices(-1.5, -10.5, 2.97, 3, 1, 6, 0.47843137254901963, 0.34901960784313724, 0.01568627450980392), generateFanIndices(), shader_vertex_source, shader_fragment_source);
+    var pintu = new MyObject(generateFanVertices(-1.5, -10.5, 2.97, 3, 1, 6, 0.47843137254901963, 0.34901960784313724, 0.01568627450980392), generateFanIndices(), shader_vertex_source, shader_fragment_source);
     pintu.setup();
     
     object.child.push(pipe);
