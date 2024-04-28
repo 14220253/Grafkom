@@ -141,7 +141,8 @@ function main(){
 
     var island_obj = SHAPE.sphere(GL, 20, 18, 36, true, 0, -15, 0, 1, 1, 0, 2, 1, 2);
 
-    var matahari_v = SHAPE.sphere(GL, 30, 18, 36, true, 2, 90, -300, 1, 1, 0, 1, 1, 1);
+    var matahari_v = SHAPE.sphere(GL, 30, 18, 36, true, 2, 120, -300, 1, 1, 0, 1, 1, 1);
+    var bulan_v = SHAPE.sphere(GL, 30, 18, 36, true, 2, -120, -300, 0.8, 0.8, 0.8, 1, 1, 1);
 
     
     var cameraMatrix = LIBS.get_I4();
@@ -168,6 +169,7 @@ function main(){
     var kincirangin = new Kincir(GL, shader_vertex_source, shader_fragment_source, 15.7);
     var manusia = new Manusia(GL, 10, 10, 0, 1, shader_vertex_source, shader_fragment_source);
     var matahari = new MyObject(GL, matahari_v.getInterleaved(), matahari_v.getFaces(), shader_vertex_source, shader_fragment_source);
+    var bulan = new MyObject(GL, bulan_v.getInterleaved(), bulan_v.getFaces(), shader_vertex_source, shader_fragment_source);
 
     thomas.setup();
     sky.setup();
@@ -176,9 +178,14 @@ function main(){
     kincirangin.setup();
     manusia.setup();
     matahari.setup();
+    bulan.setup()
 
     LIBS.translateY(VIEW_MATRIX, -10);
     LIBS.translateZ(VIEW_MATRIX, -20);
+
+    MODEL_MATRIX = LIBS.get_I4();
+
+    var PLANET_MM = LIBS.get_I4();
 
     var time_prev = 0;
     var animate = function(time){
@@ -193,14 +200,9 @@ function main(){
           dX *= AMORTIZATION, dY *= AMORTIZATION;
           THETA += dX, PHI += dY;
         }
-        MODEL_MATRIX = LIBS.get_I4();
+
         LIBS.rotateY(VIEW_MATRIX, THETA);
         LIBS.rotateX(VIEW_MATRIX, PHI);
-
-        
-        MODEL_MATRIX2 = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX2, THETA);
-        LIBS.rotateX(MODEL_MATRIX2, PHI);
         time_prev = time;
 
         THETA = 0;
@@ -229,7 +231,12 @@ function main(){
         thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         kincirangin.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        matahari.MODEL_MATRIX = PLANET_MM;
         matahari.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        bulan.MODEL_MATRIX = PLANET_MM;
+        bulan.render(VIEW_MATRIX, PROJECTION_MATRIX);
+
+        LIBS.rotateZ(PLANET_MM, 0.001);
 
         GL.flush();
 

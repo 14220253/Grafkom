@@ -44,7 +44,7 @@ class Thomas{
         var face_front_vertex = SHAPE.cylinder(0.75, 0.5, posX + 1.3, posY + 1.85, posZ + 3.5, 0, 0, 0);
         var cylinderFaces = SHAPE.cylinderFaces(face_front_vertex);
         
-        var face_back_vertex = SHAPE.cylinder(0.75, 2.2, posX + 1.3, posY + 1.85, posZ + 0.8, r, g, b);
+        var face_back_vertex = SHAPE.cylinder(0.75, 2.2, posX + 1.3, posY + 1.85, posZ + 0.8, r -0.1, g-0.1, b);
 
         var muka_object = SHAPE.hyperboloid12(GL, 0.75, 20, 30, true, 1.3, 1.85, 3.8, 0.7, 0.7, 0.7);
 
@@ -56,14 +56,14 @@ class Thomas{
         var slopeFaces = SHAPE.normalFaces(slope_vertex);
         var black_chim_vertex = SHAPE.hyperboloid1(GL, 0.3, 200, 300, true, 1.25 + posX, 3.5 + posY, -3 + posZ, 0, 0, 0);   
         
-        var blue_buldge_vertex = SHAPE.elipticParaboloid(GL, 0.25, 20, 30, true, 1.5 + posX, 2 + posY, -3.2 + posZ, r, g, b);
+        var blue_buldge_vertex = SHAPE.elipticParaboloid(GL, 0.25, 20, 30, true, 1.5 + posX, 2 + posY, -3.2 + posZ, r-0.1, g-0.1, b);
 
         var tiang1_vertex = SHAPE.rectangle(3, 2.5, 0.3, 0 + posX, -1 + posY - 5.5, -4 + posZ - 7, r, g, b);
         var tiang2_vertex = SHAPE.rectangle(3, 0.2, 0.3, 0 + posX, -1.5 + posY -5.5, -4 + posZ -7, r, g, b);
         var tiang3_vertex = SHAPE.rectangle(3, 2.5, 0.3, 0 + posX, -2.8 + posY -5.5, -4 + posZ -7, r, g, b);
         var tiang4_vertex = SHAPE.rectangle(3, 0.2, 0.3, 2.3 + posX, -1.5 + posY -5.5, -4 + posZ -7, r, g, b);
 
-        var roof_vertex = SHAPE.cylinderRoof(3, 1.5, 1 + posX + 17, -2 + posY - 5.5, 1.25 + posZ - 10, 0, 0, 0);
+        var roof_vertex = SHAPE.cylinderRoof(3, 1.5, 1 + posX + 17.2, -2 + posY - 12.5, 1.25 + posZ, 0, 0, 0);
 
         var leftEye_v = SHAPE.sphere(GL, 0.1, 18, 36, true, posX + 1.05, posZ + 5.2, -posY -1.75, 1, 1, 1);
         var leftEyeball_v = SHAPE.sphere(GL, 0.04, 18, 36, true, posX + 1.05, posZ + 5.3, -posY -1.75, 0, 0, 0);
@@ -137,6 +137,9 @@ class Thomas{
                 object.MODEL_MATRIX = this.MODEL_MATRIX;
             }
 
+            if (object == this.roof && !this.chimrotated) {
+                LIBS.rotateZ(object.MODEL_MATRIX, 4.7);
+            }
             if (object == this.chimney_black && !this.chimrotated) {
                 LIBS.rotateX(object.MODEL_MATRIX, 1.5);
             }
@@ -173,7 +176,7 @@ class Thomas{
             }
 
 
-            LIBS.translateZ(object.MODEL_MATRIX, 0.008);
+            LIBS.translateZ(object.MODEL_MATRIX, 0.01);
             
             object.render(VIEW_MATRIX, PROJECTION_MATRIX);
         });
