@@ -390,4 +390,13 @@ var SHAPE = {
 
     return sphere;
     },
+    ellipsoid: function(GL, rx, ry, rz, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    let sphere = new Sphere3(GL, rx, ry, rz, 36, 18, true, posX, posY, posZ, r, g, b);
+    
+    sphere.setSectorCount(sector);
+    sphere.setStackCount(stack);
+    sphere.setSmooth(smooth);
+    
+    return sphere;
+    },
 }
