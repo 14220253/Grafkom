@@ -7,20 +7,7 @@ function main() {
     CANVAS.width = window.innerWidth;
     CANVAS.height = window.innerHeight;
 
-
-    var drag = false;
-    var dX = 0;
-    var dY = 0;
-
-
-    var X_prev = 0;
-    var Y_prev = 0;
-
-
-    var THETA = 0;//X
-    var ALPHA = 0;//Y
-
-    var FRICTION = 0.990;
+    var SWING = 0;
 
     var keys = {};
 
@@ -34,7 +21,7 @@ function main() {
 
     var handleKeys = function () {
         if (keys["r"]) {
-            THETA += 0.05; 
+            SWING += 0.05; 
         }
     };
 
@@ -162,17 +149,42 @@ function main() {
     object.child.push(pipe);
     object.child.push(head);
     object.child.push(baling1);
+
+    var baling2 = new KincirObject(vertexBalok(1, -0.5, 4, 6.5, 0.5, 1, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), indeksBalok(), shader_vertex_source, shader_fragment_source);
+    baling2.setup();
     object.child.push(baling2);
+
+    var baling3 = new KincirObject(vertexBalok(-0.5, -1, 4, 1, 0.5, -6, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), indeksBalok(), shader_vertex_source, shader_fragment_source);
+    baling3.setup();
     object.child.push(baling3);
+
+    var baling4 = new KincirObject(vertexBalok(-1, -0.5, 4, -6.5, 0.5, 1, 0.8784313725490196, 0.7411764705882353, 0.11372549019607843), indeksBalok(), shader_vertex_source, shader_fragment_source);
+    baling4.setup();
     object.child.push(baling4);
-    object.child.push(pintu);
+
+    var back1 = new KincirObject(vertexBalok(-0.25, 0, 3.5, 0.5, 0.5, 3, 0, 0, 0), indeksBalok(), shader_vertex_source, shader_fragment_source);
+    back1.setup();
     object.child.push(back1);
+
+    var back2 = new KincirObject(vertexBalok(0, -0.25, 3.5, 3, 0.5, 0.5, 0, 0, 0), indeksBalok(), shader_vertex_source, shader_fragment_source);
+    back2.setup();
     object.child.push(back2);
+
+    var back3 = new KincirObject(vertexBalok(-0.25, 0, 3.5, 0.5, 0.5, -3, 0, 0, 0), indeksBalok(), shader_vertex_source, shader_fragment_source);
+    back3.setup();
     object.child.push(back3);
+
+    var back4 = new KincirObject(vertexBalok(0, -0.25, 3.5, -3, 0.5, 0.5, 0, 0, 0), indeksBalok(), shader_vertex_source, shader_fragment_source);
+    back4.setup();
     object.child.push(back4);
+    
+    var pintu = new KincirObject(vertexBalok(-1.5, -10.5, 2.97, 3, 1, 6, 0.47843137254901963, 0.34901960784313724, 0.01568627450980392), indeksBalok(), shader_vertex_source, shader_fragment_source);
+    pintu.setup();
+    object.child.push(pintu);
+    
 
     /*========================= DRAWING ========================= */
-    GL.clearColor(1, 0, 0, 1);
+    GL.clearColor(0, 0, 0, 1);
 
 
     GL.enable(GL.DEPTH_TEST);
@@ -187,25 +199,15 @@ function main() {
         time_prev = time;
 
 
-        if (!drag) {
-            dX *= FRICTION;
-            dY *= FRICTION;
-
-
-            THETA += dX * 2 * Math.PI / CANVAS.width;
-            ALPHA += dY * 2 * Math.PI / CANVAS.height;
-        }
-
         DEFAULT_MODEL = LIBS.get_I4();
 
         BALING_MODEL_MATRIX = LIBS.get_I4();
-        LIBS.rotateZ(BALING_MODEL_MATRIX, -THETA);
+        LIBS.rotateZ(BALING_MODEL_MATRIX, -SWING);
 
         object.MODEL_MATRIX = DEFAULT_MODEL;
-        pipe.MODEL_MATRIX = DEFAULT_MODEL;
-        head.MODEL_MATRIX = DEFAULT_MODEL;
+        tabungTengah.MODEL_MATRIX = DEFAULT_MODEL;
+        kepala.MODEL_MATRIX = DEFAULT_MODEL;
         pintu.MODEL_MATRIX = DEFAULT_MODEL;
-
         baling1.MODEL_MATRIX = BALING_MODEL_MATRIX;
         baling2.MODEL_MATRIX = BALING_MODEL_MATRIX;
         baling3.MODEL_MATRIX = BALING_MODEL_MATRIX;
