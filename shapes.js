@@ -214,7 +214,7 @@ var SHAPE = {
     },
     cylinderFaces: function(vertex) {
         var faces = [];
-        for (var i = 0;i< vertex.length / 2;i+=2) {
+        for (var i = 0;i< vertex.length / 7;i+=2) {
             faces.push(i);
             faces.push(i+1);
             faces.push(i+2);
@@ -226,8 +226,8 @@ var SHAPE = {
         
         return faces;
     },
-    hyperboloid1: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
-    let sphere = new Sphere(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
+    hyperboloid12: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    let sphere = new Sphere(GL, 1, 36, 18, false, posX -10, posY + 6, posZ + 0.1, r, g, b);
 
     sphere.setRadius(radius);
     sphere.setSectorCount(sector);
@@ -236,13 +236,14 @@ var SHAPE = {
 
     return sphere;
     },
-    hyperboloid: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
-    let sphere = new Sphere2(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
+    hyperboloid1: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    let sphere = new Sphere2(GL, 1, 36, 18, false, posX, -posZ + 1, -posY + 0.3, r, g, b);
 
     sphere.setRadius(radius);
     sphere.setSectorCount(sector);
     sphere.setStackCount(stack);
     sphere.setSmooth(smooth);
+
 
     return sphere;
     },
@@ -311,5 +312,126 @@ var SHAPE = {
     },
     slopeFormula: function(x) {
         return -((x - 2)/1.5)^3;
-    }
+    },
+    elipticParaboloid: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    let sphere = new Sphere3(GL, 1, 36, 18, false, posX, posZ + 5.5, -posY - 1.5, r, g, b);
+
+    sphere.setRadius(radius);
+    sphere.setSectorCount(sector);
+    sphere.setStackCount(stack);
+    sphere.setSmooth(smooth);
+
+    return sphere;
+    },
+    
+    cylinderRoof: function(rad, lebar, posX, posY, posZ, r, g, blu) {
+        var vertex = [];
+        for (var i=45;i<145;i+= 0.01) {
+            var a = rad*Math.cos((i/180)*Math.PI) + posY;
+            var b = rad*Math.sin((i/180)*Math.PI) + posX;
+
+            vertex.push(-lebar + posZ);
+            vertex.push(a);
+            vertex.push(-b);
+    
+            vertex.push(r);
+            vertex.push(g);
+            vertex.push(blu);
+
+            vertex.push(lebar + posZ);
+            vertex.push(a);
+            vertex.push(-b);
+    
+            vertex.push(r);
+            vertex.push(g);
+            vertex.push(blu);
+
+            
+
+            vertex.push(lebar + posZ);
+            vertex.push(a);
+            vertex.push(-b - 0.3);
+    
+            vertex.push(r);
+            vertex.push(g);
+            vertex.push(blu);
+
+            vertex.push(-lebar + posZ);
+            vertex.push(a);
+            vertex.push(-b - 0.3);
+    
+            vertex.push(r);
+            vertex.push(g);
+            vertex.push(blu);
+        }
+        return vertex;
+    },
+    roofFaces: function(vertex) {
+        var faces = [];
+        for (var i = 0;i< (vertex.length / 7);i+=2) {
+            faces.push(i);
+            faces.push(i+1);
+            faces.push(i+2);
+    
+            faces.push(i+1);
+            faces.push(i+2);
+            faces.push(i+3);
+        }
+        
+        return faces;
+    },
+    sphere: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b, scaleX, scaleY, scaleZ) {
+    let sphere = new Sphere4(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b, scaleX, scaleY, scaleZ);
+
+    sphere.setRadius(radius);
+    sphere.setSectorCount(sector);
+    sphere.setStackCount(stack);
+    sphere.setSmooth(smooth);
+
+    return sphere;
+    },
+    ellipsoid: function(GL, rx, ry, rz, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    let sphere = new Sphere5(GL, rx, ry, rz, 36, 18, true, posX, posY, posZ, r, g, b);
+    
+    sphere.setSectorCount(sector);
+    sphere.setStackCount(stack);
+    sphere.setSmooth(smooth);
+    
+    return sphere;
+    },
+    cone: function(rad,x,y,z,height,r,g,b) {
+        var list = [];
+        list.push(0 + x);
+        list.push(0 + y);
+        list.push(0 + z);
+        list.push(r);
+        list.push(g); 
+        list.push(b);
+        for  (var i = 0; i < 361; i++) {
+            var a = rad * Math.cos((i/180) * Math.PI) ;
+            var b = rad * Math.sin((i/180) * Math.PI) ;
+            list.push(a + x);
+            list.push(height + y);
+            list.push(b + z);
+            list.push(r);
+            list.push(g);
+            list.push(b);
+        }
+        return list;
+    },
+    
+    coneFaces: function() {
+        var list = [];
+        for (var i = 1; i < 361; i++) {
+            list.push(0);
+            list.push(i);
+            list.push(i+1);
+        }
+        for (var i = 1; i < 361; i++) {
+            list.push(1);
+            list.push(i+1);
+            list.push(i+2);
+        }
+        return list;
+    },
 }

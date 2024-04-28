@@ -181,13 +181,13 @@ class Roda{
     }
     render(VIEW_MATRIX, PROJECTION_MATRIX){
         this.object.MODEL_MATRIX = this.MODEL_MATRIX;
-        LIBS.translateX(this.MODEL_MATRIX, -this.posX);
-        LIBS.translateY(this.MODEL_MATRIX, -this.posY);
-        LIBS.translateZ(this.MODEL_MATRIX, -this.posZ);
-        LIBS.rotateX(this.MODEL_MATRIX, 0.05);
         LIBS.translateX(this.MODEL_MATRIX, this.posX);
         LIBS.translateY(this.MODEL_MATRIX, this.posY);
         LIBS.translateZ(this.MODEL_MATRIX, this.posZ);
+        LIBS.rotateX(this.MODEL_MATRIX, 0.05);
+        LIBS.translateX(this.MODEL_MATRIX, -this.posX);
+        LIBS.translateY(this.MODEL_MATRIX, -this.posY);
+        LIBS.translateZ(this.MODEL_MATRIX, -this.posZ);
         this.object.render(VIEW_MATRIX, PROJECTION_MATRIX);
     }
 }

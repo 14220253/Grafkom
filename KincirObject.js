@@ -1,6 +1,6 @@
-var GL;
-
 class KincirObject {
+    GL = null;
+
     canvas = null;
     vertex = [];
     faces = [];
@@ -25,10 +25,10 @@ class KincirObject {
 
     child = [];
 
-    constructor(vertex, faces, source_shader_vertex, source_shader_fragment) {
+    constructor(GL, vertex, faces, source_shader_vertex, source_shader_fragment) {
         this.vertex = vertex;
         this.faces = faces;
-
+        this.GL = GL;
 
         var compile_shader = function (source, type, typeString) {
             var shader = GL.createShader(type);
@@ -41,52 +41,52 @@ class KincirObject {
             return shader;
         };
 
-        var shader_vertex = compile_shader(source_shader_vertex, GL.VERTEX_SHADER, "VERTEX");
+        var shader_vertex = compile_shader(source_shader_vertex, this.GL.VERTEX_SHADER, "VERTEX");
 
-        var shader_fragment = compile_shader(source_shader_fragment, GL.FRAGMENT_SHADER, "FRAGMENT");
+        var shader_fragment = compile_shader(source_shader_fragment, this.GL.FRAGMENT_SHADER, "FRAGMENT");
 
-        this.SHADER_PROGRAM = GL.createProgram();
-        GL.attachShader(this.SHADER_PROGRAM, shader_vertex);
-        GL.attachShader(this.SHADER_PROGRAM, shader_fragment);
+        this.SHADER_PROGRAM = this.GL.createProgram();
+        this.GL.attachShader(this.SHADER_PROGRAM, shader_vertex);
+        this.GL.attachShader(this.SHADER_PROGRAM, shader_fragment);
 
-        GL.linkProgram(this.SHADER_PROGRAM);
+        this.GL.linkProgram(this.SHADER_PROGRAM);
 
 
         //vao
-        this._color = GL.getAttribLocation(this.SHADER_PROGRAM, "color");
-        this._position = GL.getAttribLocation(this.SHADER_PROGRAM, "position");
+        this._color = this.GL.getAttribLocation(this.SHADER_PROGRAM, "color");
+        this._position = this.GL.getAttribLocation(this.SHADER_PROGRAM, "position");
 
 
         //uniform
-        this._PMatrix = GL.getUniformLocation(this.SHADER_PROGRAM, "PMatrix"); //projection
-        this._VMatrix = GL.getUniformLocation(this.SHADER_PROGRAM, "VMatrix"); //View
-        this._MMatrix = GL.getUniformLocation(this.SHADER_PROGRAM, "MMatrix"); //Model
-        this._greyScality = GL.getUniformLocation(this.SHADER_PROGRAM, "greyScality");//GreyScality
+        this._PMatrix = this.GL.getUniformLocation(this.SHADER_PROGRAM, "PMatrix"); //projection
+        this._VMatrix = this.GL.getUniformLocation(this.SHADER_PROGRAM, "VMatrix"); //View
+        this._MMatrix = this.GL.getUniformLocation(this.SHADER_PROGRAM, "MMatrix"); //Model
+        this._greyScality = this.GL.getUniformLocation(this.SHADER_PROGRAM, "greyScality");//GreyScality
 
 
-        GL.enableVertexAttribArray(this._color);
-        GL.enableVertexAttribArray(this._position);
-        GL.useProgram(this.SHADER_PROGRAM);
+        this.GL.enableVertexAttribArray(this._color);
+        this.GL.enableVertexAttribArray(this._position);
+        this.GL.useProgram(this.SHADER_PROGRAM);
 
 
 
 
-        this.TRIANGLE_VERTEX = GL.createBuffer();
-        this.TRIANGLE_FACES = GL.createBuffer();
+        this.TRIANGLE_VERTEX = this.GL.createBuffer();
+        this.TRIANGLE_FACES = this.GL.createBuffer();
     }
 
 
     setup() {
-        GL.bindBuffer(GL.ARRAY_BUFFER, this.TRIANGLE_VERTEX);
-        GL.bufferData(GL.ARRAY_BUFFER,
+        this.GL.bindBuffer(this.GL.ARRAY_BUFFER, this.TRIANGLE_VERTEX);
+        this.GL.bufferData(this.GL.ARRAY_BUFFER,
             new Float32Array(this.vertex),
-            GL.STATIC_DRAW);
+            this.GL.STATIC_DRAW);
 
 
-        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.TRIANGLE_FACES);
-        GL.bufferData(GL.ELEMENT_ARRAY_BUFFER,
+        this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, this.TRIANGLE_FACES);
+        this.GL.bufferData(this.GL.ELEMENT_ARRAY_BUFFER,
             new Uint16Array(this.faces),
-            GL.STATIC_DRAW);
+            this.GL.STATIC_DRAW);
 
         this.child.forEach(obj => {
             obj.render(VIEW_MATRIX, PROJECTION_MATRIX);
@@ -95,24 +95,24 @@ class KincirObject {
 
 
     render(VIEW_MATRIX, PROJECTION_MATRIX) {
-        GL.useProgram(this.SHADER_PROGRAM);
-        GL.bindBuffer(GL.ARRAY_BUFFER, this.TRIANGLE_VERTEX);
-        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.TRIANGLE_FACES);
-        GL.vertexAttribPointer(this._position, 3, GL.FLOAT, false, 4 * (3 + 3), 0);
-        GL.vertexAttribPointer(this._color, 3, GL.FLOAT, false, 4 * (3 + 3), 3 * 4);
+        this.GL.useProgram(this.SHADER_PROGRAM);
+        this.GL.bindBuffer(this.GL.ARRAY_BUFFER, this.TRIANGLE_VERTEX);
+        this.GL.bindBuffer(this.GL.ELEMENT_ARRAY_BUFFER, this.TRIANGLE_FACES);
+        this.GL.vertexAttribPointer(this._position, 3, this.GL.FLOAT, false, 4 * (3 + 3), 0);
+        this.GL.vertexAttribPointer(this._color, 3, this.GL.FLOAT, false, 4 * (3 + 3), 3 * 4);
 
-        GL.uniformMatrix4fv(this._PMatrix, false, PROJECTION_MATRIX);
-        GL.uniformMatrix4fv(this._VMatrix, false, VIEW_MATRIX);
-        GL.uniformMatrix4fv(this._MMatrix, false, this.MODEL_MATRIX);
-        GL.uniform1f(this._greyScality, 1);
+        this.GL.uniformMatrix4fv(this._PMatrix, false, PROJECTION_MATRIX);
+        this.GL.uniformMatrix4fv(this._VMatrix, false, VIEW_MATRIX);
+        this.GL.uniformMatrix4fv(this._MMatrix, false, this.MODEL_MATRIX);
+        this.GL.uniform1f(this._greyScality, 1);
 
-        GL.drawElements(GL.TRIANGLES, this.faces.length, GL.UNSIGNED_SHORT, 0);
+        this.GL.drawElements(this.GL.TRIANGLES, this.faces.length, this.GL.UNSIGNED_SHORT, 0);
 
         this.child.forEach(obj => {
             obj.render(VIEW_MATRIX, PROJECTION_MATRIX);
         });
 
-        GL.flush();
+        this.GL.flush();
     }
     model(MODEL_MATRIXX){
         for (let i = 0; i < this.child.length; i++) {

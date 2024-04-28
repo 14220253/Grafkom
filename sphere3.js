@@ -19,7 +19,7 @@
 // UPDATED: 2022-12-09
 ///////////////////////////////////////////////////////////////////////////////
 
-let Sphere2 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0, posY=0, posZ=0, r=1, g=1, b=1)
+let Sphere3 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0, posY=0, posZ=0, r=1, g=1, b=1)
 {
     this.gl = gl;
     if(!gl)
@@ -50,7 +50,7 @@ let Sphere2 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0,
     this.set(radius, sectors, stacks, smooth);
 };
 
-Sphere2.prototype =
+Sphere3.prototype =
 {
     set: function(r, se, st, sm)
     {
@@ -211,8 +211,8 @@ Sphere2.prototype =
         {
             //bola
             stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
-            xy = this.radius * Math.cosh(stackAngle) * 0.35;    // r * cos(u)
-            z = this.radius * Math.sinh(stackAngle) * 1.5;     // r * sin(u)
+            xy = this.radius * Math.cosh(stackAngle);    // r * cos(u)
+            z = this.radius * Math.sinh(stackAngle);     // r * sin(u)
 
             //hyperboloid 1 sisi
             // stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
@@ -236,7 +236,7 @@ Sphere2.prototype =
             //  z = this.radius * stackAngle;
 
             //elliptic paraboloid
-            // z = stackAngle * stackAngle;
+            z = stackAngle * stackAngle * 0.5;
 
             // add (sectorCount+1) vertices per stack
             // the first and last vertices have same position and normal, but different tex coords
@@ -249,8 +249,8 @@ Sphere2.prototype =
                 y = xy * Math.sin(sectorAngle);         // r * cos(u) * sin(v)
 
                 // elliptic cone / elliptic paraboloid
-                // x = this.radius * stackAngle * Math.cos(sectorAngle);         // r * cos(u) * cos(v)
-                // y = this.radius * stackAngle * Math.sin(sectorAngle);         // r * cos(u) * sin(v)
+                x = this.radius * stackAngle * Math.cos(sectorAngle) * 0.8;         // r * cos(u) * cos(v)
+                y = this.radius * stackAngle * Math.sin(sectorAngle) * 0.8;         // r * cos(u) * sin(v)
 
                 // // // hyperboloid paraboloid
                 // x = this.radius * stackAngle * Math.tan(sectorAngle);         // r * cos(u) * cos(v)
@@ -273,9 +273,9 @@ Sphere2.prototype =
                 ii += 3;
                 jj += 2;
             }
-            if (stackAngle <= 0) {
-                break;
-            }
+            // if (stackAngle <= 0.5) {
+            //     break;
+            // }
         }
 
         // indices

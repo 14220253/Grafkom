@@ -19,7 +19,7 @@
 // UPDATED: 2022-12-09
 ///////////////////////////////////////////////////////////////////////////////
 
-let Sphere2 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0, posY=0, posZ=0, r=1, g=1, b=1)
+let Sphere5 = function(gl, rx = 1, ry = 1, rz = 1, sectors=36, stacks=18, smooth=true, posX=0, posY=0, posZ=0, r=1, g=1, b=1)
 {
     this.gl = gl;
     if(!gl)
@@ -28,6 +28,9 @@ let Sphere2 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0,
     this.r = r;
     this.g = g;
     this.b = b;
+    this.rx = rx;
+    this.ry = ry;
+    this.rz = rz;
     this.posX = posX;
     this.posY = posY;
     this.posZ = posZ;
@@ -47,14 +50,16 @@ let Sphere2 = function(gl, radius=1, sectors=36, stacks=18, smooth=true, posX=0,
         this.vboIndex = gl.createBuffer();
     }
     // init
-    this.set(radius, sectors, stacks, smooth);
+    this.set(rx, ry, rz, sectors, stacks, smooth);
 };
 
-Sphere2.prototype =
+Sphere5.prototype =
 {
-    set: function(r, se, st, sm)
+    set: function(rx, ry, rz, se, st, sm)
     {
-        this.radius = r;
+        this.rx = rx;
+        this.ry = ry;
+        this.rz = rz;
         this.sectorCount = se;
         if(se < 3)
             this.sectorCount = 3;
@@ -77,13 +82,13 @@ Sphere2.prototype =
     setSectorCount: function(s)
     {
         if(this.sectorCount != s)
-            this.set(this.radius, s, this.stackCount, this.smooth);
+            this.set(this.rx, this.ry, this.rz, s, this.stackCount, this.smooth);
         return this;
     },
     setStackCount: function(s)
     {
         if(this.stackCount != s)
-            this.set(this.radius, this.sectorCount, s, this.smooth);
+            this.set(this.rx, this.ry, this.rz, this.sectorCount, s, this.smooth);
         return this;
     },
     setSmooth: function(s)
@@ -207,36 +212,11 @@ Sphere2.prototype =
         let sectorAngle, stackAngle;
 
         ii = jj = kk = 0;
-        for(i=0; i <= this.stackCount; i += 1)
+        for(i=0; i <= this.stackCount; ++i)
         {
-            //bola
             stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
-            xy = this.radius * Math.cosh(stackAngle) * 0.35;    // r * cos(u)
-            z = this.radius * Math.sinh(stackAngle) * 1.5;     // r * sin(u)
-
-            //hyperboloid 1 sisi
-            // stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
-            // xy = this.radius * 1/Math.sin(stackAngle);    // r * cos(u)
-            // z = this.radius * Math.tan(stackAngle);     // r * sin(u)
-
-            //hyperboloid 2 sisi
-
-            // if (this.is2Side == false) {
-                // stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
-                // xy = this.radius * Math.sinh(stackAngle);    // r * cos(u)
-                // z = this.radius * Math.cosh(stackAngle);     // r * sin(u)
-            // } else { 
-                // stackAngle = Math.PI / 2 - i * stackStep;   // starting from pi/2 to -pi/2
-                // xy = this.radius * Math.sinh(stackAngle);    // r * cos(u)
-                // z = -(this.radius * Math.cosh(stackAngle));     // r * sin(u)
-            // }
-            
-
-            //elliptic con
-            //  z = this.radius * stackAngle;
-
-            //elliptic paraboloid
-            // z = stackAngle * stackAngle;
+            xy = this.radius * Math.cos(stackAngle);    // r * cos(u)
+            z = this.radius * Math.sin(stackAngle) * this.rz;     // r * sin(u)
 
             // add (sectorCount+1) vertices per stack
             // the first and last vertices have same position and normal, but different tex coords
@@ -245,17 +225,8 @@ Sphere2.prototype =
                 sectorAngle = j * sectorStep;           // starting from 0 to 2pi
 
                 // vertex position
-                x = xy * Math.cos(sectorAngle);         // r * cos(u) * cos(v)
-                y = xy * Math.sin(sectorAngle);         // r * cos(u) * sin(v)
-
-                // elliptic cone / elliptic paraboloid
-                // x = this.radius * stackAngle * Math.cos(sectorAngle);         // r * cos(u) * cos(v)
-                // y = this.radius * stackAngle * Math.sin(sectorAngle);         // r * cos(u) * sin(v)
-
-                // // // hyperboloid paraboloid
-                // x = this.radius * stackAngle * Math.tan(sectorAngle);         // r * cos(u) * cos(v)
-                // y = this.radius * stackAngle *1/ Math.cos(sectorAngle);         // r * cos(u) * sin(v)
-
+                x = xy * Math.cos(sectorAngle) * this.rx;         // r * cos(u) * cos(v)
+                y = xy * Math.sin(sectorAngle) * this.ry;         // r * cos(u) * sin(v)
                 this.addVertex(ii, x, y, z);
 
                 // normalized vertex normal
@@ -272,9 +243,6 @@ Sphere2.prototype =
                 // next
                 ii += 3;
                 jj += 2;
-            }
-            if (stackAngle <= 0) {
-                break;
             }
         }
 
@@ -465,7 +433,7 @@ Sphere2.prototype =
     {
         let vertexCount = this.getVertexCount();
         this.interleavedVertices.length = 0;
-        this.interleavedVertices = new Float32Array(vertexCount * 8); // v(3)+n(3)+t(2)
+        this.interleavedVertices = new Float32Array(vertexCount * 6); // v(3)+n(3)+t(2)
 
         let i, j, k;
         for(i=0, j=0, k=0; i < this.vertices.length; i+=3, j+=2, k+=6)
