@@ -219,7 +219,7 @@ function main(){
         island.MODEL_MATRIX = MODEL_MATRIX;
         island.render(VIEW_MATRIX, PROJECTION_MATRIX);
         manusia.MODEL_MATRIX = MODEL_MATRIX_MANUSIA;
-        manusia.render(VIEW_MATRIX, MODEL_MATRIX);
+        manusia.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         thomas.MODEL_MATRIX = MODEL_MATRIX_THOMAS;
         thomas.render(VIEW_MATRIX, PROJECTION_MATRIX);

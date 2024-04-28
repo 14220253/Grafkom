@@ -164,7 +164,7 @@ var LIBS = {
 
     },
 
-    multiply: function(a, b) {
+    multiply1: function(a, b) {
       var a00 = a[0 * 4 + 0];
       var a01 = a[0 * 4 + 1];
       var a02 = a[0 * 4 + 2];
@@ -226,7 +226,7 @@ var LIBS = {
       m[12] = m[12] * x;
       m[13] = m[13] * y;
       m[14] = m[14] * z;
-      return this.multiply(m, sm);
+      return this.multiply1(m, sm);
     },
   
     scaleuniform: function (m, s) {
@@ -238,7 +238,7 @@ var LIBS = {
       m[12] = m[12] * s;
       m[13] = m[13] * s;
       m[14] = m[14] * s;
-      return this.multiply(m, sm);
+      return this.multiply1(m, sm);
     },
   
 
