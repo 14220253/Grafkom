@@ -379,4 +379,14 @@ var SHAPE = {
         
         return faces;
     },
+    sphere: function(GL, radius, sector, stack, smooth, posX, posY, posZ, r, g, b) {
+    let sphere = new Sphere4(GL, 1, 36, 18, false, posX, posY, posZ, r, g, b);
+
+    sphere.setRadius(radius);
+    sphere.setSectorCount(sector);
+    sphere.setStackCount(stack);
+    sphere.setSmooth(smooth);
+
+    return sphere;
+    },
 }

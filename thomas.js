@@ -23,6 +23,10 @@ class Thomas{
     tiang3= null;
     tiang4= null;
     roof = null;
+    leftEye = null;
+    leftEyeball = null;
+    rightEye = null;
+    rightEye = null;
     constructor(GL, posX, posY, posZ, shader_vertex_source, shader_fragment_source) {
         //generate vertex and face
         var tinggi = 2.0;
@@ -60,6 +64,11 @@ class Thomas{
 
         var roof_vertex = SHAPE.cylinderRoof(3, 1.5, 1, -2, 1.25, 0, 0, 0);
 
+        var leftEye_vertex = SHAPE.sphere(GL, 0.2, 28, 36, true, 1, 4.6, -1.7, 1, 1, 1);
+        var leftEyeball_vertex = SHAPE.sphere(GL, 0.1, 28, 36, true, 1, 4.9, -1.7, 0, 0, 0);
+        var rightEye_vertex = SHAPE.sphere(GL, 0.2, 28, 36, true, 1.5, 4.6, -1.7, 1, 1, 1);
+        var rightEyeball_vertex = SHAPE.sphere(GL, 0.1, 28, 36, true, 1.5, 4.9, -1.7, 0, 0, 0);
+
         this.body = new MyObject(GL, body_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
         this.face_front = new MyObject(GL, face_front_vertex, cylinderFaces, shader_vertex_source, shader_fragment_source);
         this.face_back = new MyObject(GL, face_back_vertex, cylinderFaces, shader_vertex_source, shader_fragment_source);
@@ -74,6 +83,10 @@ class Thomas{
         this.tiang3 = new MyObject(GL, tiang3_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
         this.tiang4 = new MyObject(GL, tiang4_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
         this.roof = new MyObject(GL, roof_vertex, SHAPE.roofFaces(roof_vertex), shader_vertex_source, shader_fragment_source);
+        this.leftEye = new MyObject(GL, leftEye_vertex.getInterleaved(), leftEye_vertex.getFaces(), shader_vertex_source, shader_fragment_source);
+        this.leftEyeball = new MyObject(GL, leftEyeball_vertex.getInterleaved(), leftEyeball_vertex.getFaces(), shader_vertex_source, shader_fragment_source);
+        this.rightEye = new MyObject(GL, rightEye_vertex.getInterleaved(), rightEye_vertex.getFaces(), shader_vertex_source, shader_fragment_source);
+        this.rightEyeball = new MyObject(GL, rightEyeball_vertex.getInterleaved(), rightEyeball_vertex.getFaces(), shader_vertex_source, shader_fragment_source);
 
         this.roda1 = new Roda(GL, 1, 0.1, posX + 2.5, posY - 0.7, posZ - 2.5, shader_vertex_source, shader_fragment_source, LIBS.get_I4());
         this.roda2 = new Roda(GL, 1, 0.1, posX + 2.5, posY - 0.7, posZ + 0, shader_vertex_source, shader_fragment_source, LIBS.get_I4());
@@ -102,6 +115,10 @@ class Thomas{
         this.objects.push(this.tiang3);
         this.objects.push(this.tiang4);
         this.objects.push(this.roof);
+        this.objects.push(this.leftEye);
+        this.objects.push(this.leftEyeball);
+        this.objects.push(this.rightEye);
+        this.objects.push(this.rightEyeball);
 
         this.counter = this.objects.length;
     }
