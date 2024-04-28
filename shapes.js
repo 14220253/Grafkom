@@ -214,7 +214,7 @@ var SHAPE = {
     },
     cylinderFaces: function(vertex) {
         var faces = [];
-        for (var i = 0;i< vertex.length / 2;i+=2) {
+        for (var i = 0;i< (vertex.length / 6) - 2;i+=2) {
             faces.push(i);
             faces.push(i+1);
             faces.push(i+2);
@@ -226,6 +226,58 @@ var SHAPE = {
         
         return faces;
     },
+
+    cone: function(rad,x,y,z,height,r,g,b) {
+        var list = [];
+        list.push(0 + x);
+        list.push(0 + y);
+        list.push(0 + z);
+        list.push(r);
+        list.push(g); 
+        list.push(b);
+        for  (var i = 0; i < 361; i++) {
+            var a = rad * Math.cos((i/180) * Math.PI) ;
+            var b = rad * Math.sin((i/180) * Math.PI) ;
+            list.push(a + x);
+            list.push(height + y);
+            list.push(b + z);
+            list.push(r);
+            list.push(g);
+            list.push(b);
+        }
+        return list;
+    },
+    
+    coneFaces: function() {
+        var list = [];
+        for (var i = 1; i < 361; i++) {
+            list.push(0);
+            list.push(i);
+            list.push(i+1);
+        }
+        for (var i = 1; i < 361; i++) {
+            list.push(1);
+            list.push(i+1);
+            list.push(i+2);
+        }
+        return list;
+    },
+    // generateCircle: function(x,y,z,rad) {
+    //     var list = [];
+    //     for (var i = 0; i < 361; i++) {
+    //         var a = rad * Math.cos((i/180) * Math.PI) + x;
+    //         var b = rad * Math.sin((i/180) * Math.PI) + y;
+    //         list.push(a);
+    //         list.push(b);
+    //         list.push(z);
+    //         list.push(1);
+    //         list.push(1);
+    //         list.push(0);
+    //     }
+    //     return list;
+    // },
+    
+    
 
     ellipsoid: function(GL, rx, ry, rz, sector, stack, smooth, posX, posY, posZ, r, g, b) {
     let sphere = new Sphere3(GL, rx, ry, rz, 36, 18, true, posX, posY, posZ, r, g, b);

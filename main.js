@@ -148,19 +148,15 @@ function main(){
     // LIBS.translateY(VIEW_MATRIX, 0);
     var time_prev = 0;
 
-
-
     // var thomas = new Thomas(GL, 0, 0, 0, shader_vertex_source, shader_fragment_source);
-    var manusia = new Manusia(GL, 0, 0, 0, shader_vertex_source, shader_fragment_source);
+    var manusia = new Manusia(GL, 0, 0, 0, 1, shader_vertex_source, shader_fragment_source);
     var sky = new MyObject(GL, cube, cube_faces, shader_vertex_source, shader_fragment_source);
 
     manusia.setup();
     // thomas.setup();
     sky.setup();
-    
     // LIBS.translateZ(VIEW_MATRIX, -50);
     // LIBS.translateY(VIEW_MATRIX, -5);
-
     var time_prev = 0;
     var animate = function(time){
         // var matrix = VIEW_PROJECTION_MATRIX;
@@ -195,7 +191,7 @@ function main(){
 
         sky.MODEL_MATRIX = MM_SKY;
         sky.render(VIEW_MATRIX, PROJECTION_MATRIX);
-        MM_MANUSIA = LIBS.scaleflex(MM_MANUSIA, 2,2,2);
+
         manusia.MODEL_MATRIX = MM_MANUSIA;
         manusia.render(VIEW_MATRIX, PROJECTION_MATRIX);
         // thomas.MODEL_MATRIX = MM_THOMAS;
