@@ -4,6 +4,7 @@ class Roda{
     posX = null;
     posY = null;
     posZ = null;
+    child_MM = null;
     constructor(GL, rad, h, posX, posY, posZ, shader_vertex_source, shader_fragment_source, MM) {
         //generate vertex and face
         //Cylinder luar = 4320 vertex
@@ -168,10 +169,10 @@ class Roda{
             faces.push(i+3);
         }
 
-        this.MODEL_MATRIX = MM;
-        LIBS.translateX(this.MODEL_MATRIX, posX);
-        LIBS.translateY(this.MODEL_MATRIX, posY);
-        LIBS.translateZ(this.MODEL_MATRIX, posZ);
+        this.child_MM = MM;
+        LIBS.translateX(this.child_MM, posX);
+        LIBS.translateY(this.child_MM, posY);
+        LIBS.translateZ(this.child_MM, posZ);
 
         this.object = new MyObject(GL, vertex, faces, shader_vertex_source, shader_fragment_source);
     }
@@ -180,14 +181,11 @@ class Roda{
         this.object.setup();
     }
     render(VIEW_MATRIX, PROJECTION_MATRIX){
-        this.object.MODEL_MATRIX = this.MODEL_MATRIX;
-        LIBS.translateX(this.MODEL_MATRIX, this.posX);
-        LIBS.translateY(this.MODEL_MATRIX, this.posY);
-        LIBS.translateZ(this.MODEL_MATRIX, this.posZ);
-        LIBS.rotateX(this.MODEL_MATRIX, 0.05);
-        LIBS.translateX(this.MODEL_MATRIX, -this.posX);
-        LIBS.translateY(this.MODEL_MATRIX, -this.posY);
-        LIBS.translateZ(this.MODEL_MATRIX, -this.posZ);
+        this.object.MODEL_MATRIX= this.MODEL_MATRIX;
+        // LIBS.rotateY(this.object.MODEL_MATRIX, -0.008333);
+        this.object.MODEL_MATRIX = LIBS.multiply1(this.object.MODEL_MATRIX, this.child_MM);
+        // this.object.MODEL_MATRIX = this.child_MM;
+        LIBS.rotateX(this.child_MM, 0.05);
         this.object.render(VIEW_MATRIX, PROJECTION_MATRIX);
     }
 }

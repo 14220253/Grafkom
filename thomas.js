@@ -28,7 +28,23 @@ class Thomas{
     rightEye = null;
     rightEyeball = null;
     chimrotated = false;
+    track = null;
+    timer = 0;
+    smoke = null;
+    smoke_MM = LIBS.get_I4();
+    GL = null;
+    posX = null;
+    posY = null;
+    posZ = null;
+    svs = null;
+    sfs = null;
     constructor(GL, posX, posY, posZ, shader_vertex_source, shader_fragment_source) {
+        this.GL = GL;
+        this.posX = posX;
+        this.posY = posY;
+        this.posZ = posZ;
+        this.svs = shader_vertex_source;
+        this.sfs = shader_fragment_source;
         //generate vertex and face
         var tinggi = 2.0;
         var panjang = 6;
@@ -70,6 +86,11 @@ class Thomas{
         var rightEye_v = SHAPE.sphere(GL, 0.1, 18, 36, true, posX + 1.6, posZ + 5.2, -posY -1.75, 1, 1, 1);
         var rightEyeball_v = SHAPE.sphere(GL, 0.04, 18, 36, true, posX + 1.6, posZ + 5.3, -posY -1.75, 0, 0, 0);
 
+        var smoke_v = SHAPE.sphere(GL, 0.8, 18, 36, true, 0, 0, 0, 1, 1, 1, 1, 1, 1);
+        LIBS.translateX(this.smoke_MM, posX + 1.25);
+        LIBS.translateY(this.smoke_MM, posY + 2)
+        LIBS.translateZ(this.smoke_MM, posZ + 3.5)
+
 
         this.body = new MyObject(GL, body_vertex, cube_faces, shader_vertex_source, shader_fragment_source);
         this.face_front = new MyObject(GL, face_front_vertex, cylinderFaces, shader_vertex_source, shader_fragment_source);
@@ -97,6 +118,8 @@ class Thomas{
         this.roda5 = new Roda(GL, 1, 0.1, posX + 0, posY - 0.7, posZ + 0,  shader_vertex_source, shader_fragment_source, LIBS.get_I4());
         this.roda6 = new Roda(GL, 1, 0.1, posX + 0, posY - 0.7, posZ + 2.5,  shader_vertex_source, shader_fragment_source, LIBS.get_I4());
 
+        this.smoke = new MyObject(GL, smoke_v.getInterleaved(), smoke_v.getFaces(), shader_vertex_source, shader_fragment_source);
+
         this.objects.push(this.body);
         this.objects.push(this.face_front);
         this.objects.push(this.face_back);
@@ -122,7 +145,15 @@ class Thomas{
         this.objects.push(this.rightEye);
         this.objects.push(this.rightEyeball);
 
+        // this.objects.push(this.smoke);
+        this.smoke.MODEL_MATRIX = this.smoke_MM;
+
         this.counter = this.objects.length;
+
+        var track_dots = [-5, 0, -3.5, 4, 3.5, 4, 5, 0, 3.5, -4, -3.5, 4];
+        this.track = LIBS.generateBSpline(track_dots, 1200, 2);
+        this.track.push(this.track[0], this.track[1])
+        console.log(this.track);
     }
 
     setup(){
@@ -131,9 +162,12 @@ class Thomas{
         });
     }
     render(VIEW_MATRIX, PROJECTION_MATRIX){
+        // if (this.timer % 10 == 0){
+        //     this.objects.push(this.smoke);
+        // }
         this.objects.forEach(object => {
 
-            if (!(object instanceof Roda) && object.MODEL_MATRIX == null) {
+            if (object.MODEL_MATRIX == null) {
                 object.MODEL_MATRIX = this.MODEL_MATRIX;
             }
 
@@ -174,10 +208,24 @@ class Thomas{
             if (object == this.leftEye && !this.chimrotated) {
                 LIBS.rotateX(object.MODEL_MATRIX, 1.5);
             }
-
-
-            LIBS.translateZ(object.MODEL_MATRIX, 0.01);
             
+            if (this.animationIndex == this.track.length - 2) {
+                this.animationIndex = 0;
+            }
+
+
+            LIBS.rotateY(object.MODEL_MATRIX, 0.01)
+            // LIBS.translateY(this.smoke_MM, 0.00001);
+            if (object == this.smoke) {
+                object.MODEL_MATRIX = LIBS.scaleuniform(object.MODEL_MATRIX, 1.001)
+            }
+            object.MODEL_MATRIX = LIBS.scaleuniform(object.MODEL_MATRIX, 1.001);
+            // LIBS.translateY(this.MODEL_MATRIX, 0.01)
+
+        //    LIBS.teleportX(this.MODEL_MATRIX, this.track[this.animationIndex]);
+        //    LIBS.teleportZ(this.MODEL_MATRIX, this.track[this.animationIndex + 1]);
+           this.timer ++; 
+
             object.render(VIEW_MATRIX, PROJECTION_MATRIX);
         });
     }

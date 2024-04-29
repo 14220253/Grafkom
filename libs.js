@@ -344,6 +344,125 @@ var LIBS = {
         }
       }
       return res;
-    }
+    },
 
+
+    rotateAbrAxis: function (m, xv, yv, zv, angle) {
+      var mv = [1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            xv, yv, zv, 1];
+  
+      var tx = m[12], ty = m[13], tz = m[14];
+  
+      //translate m ke origin point (0, 0, 0)
+      m[12] -= tx;
+      m[13] -= ty;
+      m[14] -= tz;
+  
+      //translate mv sesuai m
+      mv[12] -= tx;
+      mv[13] -= ty;
+      mv[14] -= tz;
+  
+      //rotate mv ke plane-yz
+      var THETA = Math.atan(xv / yv); //THETA sudah dalam bentuk radian
+      LIBS.rotateY(mv, -THETA);
+  
+      //rotate mv ke plane-xz
+      var PHI = Math.atan(yv / Math.sqrt(Math.pow(xv,2) + Math.pow(zv,2))) // PHI sudah dalam bentuk radian
+      LIBS.rotateX(mv, PHI);
+  
+      //rotate m sesuai dengan mv
+      LIBS.rotateY(m, -THETA);
+      LIBS.rotateX(m, PHI);
+  
+      //rotate m sesuai angle yang diinginkan
+      LIBS.rotateZ(m, LIBS.degToRad(angle));
+  
+      //reverse rotasi yang td dilakukan
+      LIBS.rotateX(m, -PHI);
+      LIBS.rotateY(m, THETA);
+  
+      //translate m ke letak utama
+      m[12] += tx;
+      m[13] += ty;
+      m[14] += tz;
+    },
+    normalizeScreen: function(x,y,width,height){
+      var nx = 2*x/width - 1
+      var ny = -2*y/height + 1
+    
+      return [nx,ny]
+    },
+    
+  generateBSpline: function(controlPoint, m, degree){
+      var curves = [];
+      var knotVector = []
+  
+      var n = controlPoint.length/2;
+  
+  
+      // Calculate the knot values based on the degree and number of control points
+      for (var i = 0; i < n + degree+1; i++) {
+          if (i < degree + 1) {
+          knotVector.push(0);
+          } else if (i >= n) {
+          knotVector.push(n - degree);
+          } else {
+          knotVector.push(i - degree);
+          }
+      }
+  
+  
+  
+      var basisFunc = function(i,j,t){
+          if (j == 0){
+              if(knotVector[i] <= t && t<(knotVector[(i+1)])){
+              return 1;
+              }else{
+              return 0;
+              }
+          }
+  
+          var den1 = knotVector[i + j] - knotVector[i];
+          var den2 = knotVector[i + j + 1] - knotVector[i + 1];
+          
+          var term1 = 0;
+          var term2 = 0;
+          
+  
+          if (den1 != 0 && !isNaN(den1)) {
+              term1 = ((t - knotVector[i]) / den1) * basisFunc(i,j-1,t);
+          }
+          
+          if (den2 != 0 && !isNaN(den2)) {
+              term2 = ((knotVector[i + j + 1] - t) / den2) * basisFunc(i+1,j-1,t);
+          }
+          
+          return term1 + term2;
+      }
+  
+  
+      for(var t=0;t<m;t++){
+          var x=0;
+          var y=0;
+          
+          var u = (t/m * (knotVector[controlPoint.length/2] - knotVector[degree]) ) + knotVector[degree] ;
+  
+          //C(t)
+          for(var key =0;key<n;key++){
+  
+          var C = basisFunc(key,degree,u);
+          // console.log(C);
+          x+=(controlPoint[key*2] * C);
+          y+=(controlPoint[key*2+1] * C);
+          // console.log(t+" "+degree+" "+x+" "+y+" "+C);
+          }
+          curves.push(x);
+          curves.push(y);
+      }
+      // console.log(curves)
+      return curves;
+  }
 };
