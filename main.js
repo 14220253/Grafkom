@@ -165,7 +165,7 @@ function main(){
     var sea = new MyObject(GL, sea_v, cube_faces, shader_vertex_source, shader_fragment_source);
     var island = new MyObject(GL, island_obj.getInterleaved(), island_obj.getFaces(), shader_vertex_source, shader_fragment_source);
     var kincirangin = new Kincir(GL, shader_vertex_source, shader_fragment_source, 15.7);
-    var manusia = new Manusia(GL, 10, 10, 0, 1, shader_vertex_source, shader_fragment_source);
+    var manusia = new Manusia(GL, 10, 8.7, 0, 1, shader_vertex_source, shader_fragment_source);
     var matahari = new MyObject(GL, matahari_v.getInterleaved(), matahari_v.getFaces(), shader_vertex_source, shader_fragment_source);
     var bulan = new MyObject(GL, bulan_v.getInterleaved(), bulan_v.getFaces(), shader_vertex_source, shader_fragment_source);
 

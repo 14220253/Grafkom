@@ -65,7 +65,7 @@ class Manusia{
         LIBS.translateX(this.head.MODEL_MATRIX, 0 + posX);
         
         //eyes
-        LIBS.translateY(this.eye_left.MODEL_MATRIX, 2 + posX);
+        LIBS.translateY(this.eye_left.MODEL_MATRIX, 2 + posY);
         LIBS.translateY(this.eye_right.MODEL_MATRIX, 2 + posY);
 
         //upper left arm
@@ -192,6 +192,14 @@ class Manusia{
                     this.up = true;
                 }
             }
+
+            if (object == this.head || object == this.eye_left || object == this.eye_right || object == this.nose) {
+                if(this.up && this.timer < 50) {
+                    LIBS.rotateY(object.MODEL_MATRIX, -0.05);
+                } else if (this.up && this.timer > 50) {
+                    LIBS.rotateY(object.MODEL_MATRIX, 0.05);
+                }
+            }
             if (this.counter > 100 && up == true) {
                 up = false;
             }
@@ -199,10 +207,10 @@ class Manusia{
                 up = true;
             }
             if (this.up){
-                LIBS.translateY(object.MODEL_MATRIX, 0.1);
+                LIBS.translateY(object.MODEL_MATRIX, 0.02);
             }
             else {
-                LIBS.translateY(object.MODEL_MATRIX, -0.1);
+                LIBS.translateY(object.MODEL_MATRIX, -0.02);
             }
 
             object.render(VIEW_MATRIX, PROJECTION_MATRIX);
